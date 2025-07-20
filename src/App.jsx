@@ -15,7 +15,7 @@ function App() {
   <Navbar/>
   <TradingHeader/>
   <About/>
-  <TradingHomePage/>
+  {/* <TradingHomePage/> */}
   </AnimatedBackground>
   )
 }

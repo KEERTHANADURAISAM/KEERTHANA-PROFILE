@@ -1,83 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Play, TrendingUp, Users, Award, ChevronRight, Star } from 'lucide-react';
-
-const AnimatedBackground = ({ children }) => {
-  const [particles, setParticles] = useState([]);
-
-  useEffect(() => {
-    const generateParticles = () => {
-      const newParticles = [];
-      for (let i = 0; i < 60; i++) {
-        newParticles.push({
-          id: i,
-          x: Math.random() * 100,
-          y: Math.random() * 100,
-          size: Math.random() * 4 + 2,
-          speedX: (Math.random() - 0.5) * 0.3,
-          speedY: (Math.random() - 0.5) * 0.3,
-          opacity: Math.random() * 0.6 + 0.2,
-          color: '#3b82f6'
-        });
-      }
-      setParticles(newParticles);
-    };
-
-    generateParticles();
-  }, []);
-
-  useEffect(() => {
-    const animateParticles = () => {
-      setParticles(prevParticles =>
-        prevParticles.map(particle => ({
-          ...particle,
-          x: (particle.x + particle.speedX + 100) % 100,
-          y: (particle.y + particle.speedY + 100) % 100
-        }))
-      );
-    };
-
-    const interval = setInterval(animateParticles, 50);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-blue-900 relative overflow-hidden">
-      <div
-        className="absolute inset-0 opacity-5"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, #3b82f6 1px, transparent 1px),
-            linear-gradient(to bottom, #3b82f6 1px, transparent 1px)
-          `,
-          backgroundSize: '50px 50px'
-        }}
-      />
-      
-      <div className="absolute inset-0">
-        {particles.map(particle => (
-          <div
-            key={particle.id}
-            className="absolute rounded-full"
-            style={{
-              left: `${particle.x}%`,
-              top: `${particle.y}%`,
-              width: `${particle.size}px`,
-              height: `${particle.size}px`,
-              backgroundColor: particle.color,
-              opacity: particle.opacity,
-              transition: 'all 0.05s linear'
-            }}
-          />
-        ))}
-      </div>
-      
-      {children}
-    </div>
-  );
-};
+import { Award, ChevronRight, Play, Star, TrendingUp, Users } from 'lucide-react';
+import React, { useEffect, useState } from 'react'
 
 const TradingHeader = () => {
-  const [currentSlogan, setCurrentSlogan] = useState(0);
+   const [currentSlogan, setCurrentSlogan] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
 
   const slogans = [
@@ -95,23 +20,8 @@ const TradingHeader = () => {
   }, []);
 
   return (
-    <AnimatedBackground>
-      {/* Navigation */}
-      <nav className="relative z-10 flex justify-between items-center px-6 lg:px-12 py-6">
-        <div className="flex items-center space-x-2">
-          <TrendingUp className="w-8 h-8 text-blue-400" />
-          <span className="text-2xl font-bold text-white">TradePro</span>
-        </div>
-        <div className="hidden md:flex space-x-8 text-gray-300">
-          <a href="#" className="hover:text-white transition-colors">Courses</a>
-          <a href="#" className="hover:text-white transition-colors">Strategies</a>
-          <a href="#" className="hover:text-white transition-colors">Community</a>
-          <a href="#" className="hover:text-white transition-colors">About</a>
-        </div>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors">
-          Login
-        </button>
-      </nav>
+  <div>
+    
 
       {/* Main Header Content */}
       <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between px-6 lg:px-12 py-12 lg:py-20">
@@ -129,7 +39,7 @@ const TradingHeader = () => {
           <div>
             <h1 className="text-5xl lg:text-7xl font-bold text-white leading-tight mb-4">
               Master the
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
                 Art of Trading
               </span>
             </h1>
@@ -149,7 +59,7 @@ const TradingHeader = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-            <button className="group bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2 transform hover:scale-105">
+            <button className="group bg-gradient-to-r from-blue-800 to-purple-800 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2 transform hover:scale-105">
               <span>Start Learning Now</span>
               <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
@@ -256,7 +166,7 @@ const TradingHeader = () => {
               Live Trading
             </div>
 
-            <div className="absolute -bottom-4 -left-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
+            <div className="absolute -bottom-4 -left-4 bg-gradient-to-r from-blue-800 to-purple-800 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
               Real Results
             </div>
           </div>
@@ -280,8 +190,10 @@ const TradingHeader = () => {
           </div>
         </div>
       </div>
-    </AnimatedBackground>
+   </div>
   );
 };
 
-export default TradingHeader;
+
+
+export default TradingHeader
