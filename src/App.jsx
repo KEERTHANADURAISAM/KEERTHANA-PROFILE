@@ -1,11 +1,22 @@
-import AnimatedBackground from "./Pages/AnimatedBackground"
+import About from "./Pages/About"
+import AnimatedBackground from "./Pages/AnimatedGridBackground"
+import Navbar from "./Pages/Navbar"
+import TradingHeader from "./Pages/TradingHeader"
+import TradingHomePage from "./Pages/TradingHomePage"
+import WorkshopRegistrationForm from "./Pages/WorkShopRegistrationForm"
 
 
 function App() {
 
 
   return (
-  <AnimatedBackground/>
+  
+ <AnimatedBackground>
+  <Navbar/>
+  <TradingHeader/>
+  <About/>
+  <TradingHomePage/>
+  </AnimatedBackground>
   )
 }
 
