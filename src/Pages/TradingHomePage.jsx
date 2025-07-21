@@ -53,9 +53,11 @@ const TradingHomePage = () => {
 
               <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight">
                 Unlock
-                <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 bg-clip-text text-transparent animate-pulse">
-                  Trading
-                </span>
+      <div className="w-full flex justify-center items-center py-8">
+  <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 animate-pulse">
+    Trading
+  </h1>
+</div>
                 <span className="block text-4xl md:text-5xl">Secrets</span>
               </h1>
 

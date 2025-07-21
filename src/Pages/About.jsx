@@ -2,7 +2,7 @@ import React from 'react';
 
 const About = () => {
   return (
-    <div>
+    <div className="mt-20">
       {/* About Section */}
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-16">
@@ -17,7 +17,11 @@ const About = () => {
           <div className="relative">
             <div className="w-80 h-80 mx-auto bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full flex items-center justify-center border-2 border-blue-400/30">
               <div className="w-64 h-64 bg-gray-700 rounded-full flex items-center justify-center">
-                <span className="text-gray-400 text-lg">Profile Photo</span>
+  <img 
+        src="/your-image-path.jpg" // <-- Replace with your actual image path
+        alt="Profile"
+        className="object-cover w-full h-full"
+      />
               </div>
             </div>
             {/* Floating elements */}
@@ -27,26 +31,19 @@ const About = () => {
 
           {/* About Content */}
           <div className="text-white">
-            <h3 className="text-2xl font-bold mb-4 text-blue-400">Hello! I'm Keerthana</h3>
-            <p className="text-gray-300 mb-6 leading-relaxed">
-              I'm a passionate Frontend Developer with 3+ years of experience creating 
-              engaging digital experiences. I specialize in React, JavaScript, and modern 
-              web technologies, with a strong focus on user-centered design.
-            </p>
-            <p className="text-gray-300 mb-6 leading-relaxed">
-              When I'm not coding, you can find me exploring new design trends, 
-              learning emerging technologies, or working on creative side projects. 
-              I believe great design and clean code go hand in hand.
+            <h3 className="text-2xl font-bold mb-4 text-blue-400">TRADING PROFESSOR</h3>
+                      <p className="text-gray-300 mb-6 leading-relaxed">
+             
+I'm a full-time trader with a passion for financial markets and a strong focus on consistency, risk management, and data-driven strategies. With over 5 years of hands-on experience in trading stocks, forex, and crypto, I help others grow their capital through smart portfolio management and copy trading services. I believe in transparency, discipline, and continuous learning—traits that define every trade I take.
+
+Whether you're a beginner looking to learn or an investor wanting passive returns, I’m here to guide you toward smarter trading decisions.
             </p>
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-4 mt-8">
+              
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-400">50+</div>
-                <div className="text-gray-400 text-sm">Projects</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-purple-400">3+</div>
+                <div className="text-2xl font-bold text-purple-400">5+</div>
                 <div className="text-gray-400 text-sm">Years Experience</div>
               </div>
               <div className="text-center">

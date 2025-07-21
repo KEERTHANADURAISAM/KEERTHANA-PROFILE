@@ -1,480 +1,618 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-const WorkshopRegistrationForm = () => {
+
+
+  
+
+
+
+const SignaturePad = ({ onSignatureChange, signature }) => {
+  const canvasRef = useRef(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [lastPos, setLastPos] = useState({ x: 0, y: 0 });
+
+  const startDrawing = (e) => {
+    setIsDrawing(true);
+    const rect = canvasRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setLastPos({ x, y });
+  };
+
+  const draw = (e) => {
+    if (!isDrawing) return;
+    
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    ctx.strokeStyle = '#3b82f6';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(lastPos.x, lastPos.y);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+
+    setLastPos({ x, y });
+    onSignatureChange(canvas.toDataURL());
+  };
+
+  const stopDrawing = () => {
+    setIsDrawing(false);
+  };
+
+  const clearSignature = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    onSignatureChange('');
+  };
+
+  return (
+    <div className="space-y-2">
+      <div className="border-2 border-blue-500 rounded-lg bg-white">
+        <canvas
+          ref={canvasRef}
+          width={400}
+          height={150}
+          className="w-full h-32 cursor-crosshair"
+          onMouseDown={startDrawing}
+          onMouseMove={draw}
+          onMouseUp={stopDrawing}
+          onMouseLeave={stopDrawing}
+        />
+      </div>
+      <button
+        type="button"
+        onClick={clearSignature}
+        className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+      >
+        Clear Signature
+      </button>
+    </div>
+  );
+};
+
+const TradingRegistrationForm = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
+    dateOfBirth: '',
+    address: '',
     city: '',
-    profession: '',
-    experience: '',
-    workshop: '',
-    preferredDate: '',
-    location: '',
-    hearAbout: '',
-    expectations: '',
+    state: '',
+    pincode: '',
+    occupation: '',
+    tradingExperience: '',
+    workshopDate: '',
+    emergencyContact: '',
+    emergencyPhone: '',
+    aadharNumber: '',
+    panNumber: '',
+    aadharFile: null,
+    panFile: null,
+    signature: '',
     agreeTerms: false,
-    eligibilityConfirm: false,
-    financialStability: false
+    agreeMarketing: false
   });
-  
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [particles, setParticles] = useState([]);
 
-  // Create particles on component mount
-  useEffect(() => {
-    const newParticles = [];
-    for (let i = 0; i < 50; i++) {
-      newParticles.push({
-        id: i,
-        left: Math.random() * 100,
-        size: Math.random() * 4 + 2,
-        delay: Math.random() * 20,
-        duration: Math.random() * 10 + 15
-      });
-    }
-    setParticles(newParticles);
-  }, []);
+  const [errors, setErrors] = useState({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type, checked, files } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value
     }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
     
-    // Basic validation
-    const requiredFields = ['firstName', 'lastName', 'email', 'phone', 'city', 'profession', 'experience', 'workshop'];
-    const isValid = requiredFields.every(field => formData[field].trim() !== '') && 
-                   formData.agreeTerms && 
-                   formData.eligibilityConfirm && 
-                   formData.financialStability;
-
-    if (isValid) {
-      setIsSubmitted(true);
-      console.log('Form submitted:', formData);
-    } else {
-      alert('Please fill in all required fields and accept the terms.');
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
     }
   };
 
-  const workshops = [
-    {
-      id: 'g4g5',
-      value: 'G4-G5 Elite Intraday',
-      title: 'G4-G5 Elite Intraday',
-      description: 'Advanced intraday trading techniques'
-    },
-    {
-      id: 'g4g5g6',
-      value: 'G4-G5-G6 Technique',
-      title: 'G4-G5-G6 Technique',
-      description: 'Comprehensive trading strategies'
-    },
-    {
-      id: 's4swing',
-      value: 'S4 Swing Trading',
-      title: 'S4 Swing Trading',
-      description: 'Master swing trading techniques'
-    },
-    {
-      id: 'online',
-      value: 'Online Workshop',
-      title: 'Online Workshop',
-      description: 'Virtual learning experience'
+  const handleSignatureChange = (signatureData) => {
+    setFormData(prev => ({ ...prev, signature: signatureData }));
+    if (errors.signature) {
+      setErrors(prev => ({ ...prev, signature: '' }));
     }
-  ];
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
+    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
+    if (!formData.email.trim()) newErrors.email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
+    if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
+    if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of birth is required';
+    if (!formData.address.trim()) newErrors.address = 'Address is required';
+    if (!formData.city.trim()) newErrors.city = 'City is required';
+    if (!formData.state.trim()) newErrors.state = 'State is required';
+    if (!formData.pincode.trim()) newErrors.pincode = 'Pincode is required';
+    if (!formData.workshopDate) newErrors.workshopDate = 'Workshop date is required';
+    if (!formData.emergencyContact.trim()) newErrors.emergencyContact = 'Emergency contact is required';
+    if (!formData.emergencyPhone.trim()) newErrors.emergencyPhone = 'Emergency phone is required';
+    if (!formData.aadharNumber.trim()) newErrors.aadharNumber = 'Aadhar number is required';
+    else if (!/^\d{12}$/.test(formData.aadharNumber.replace(/\s/g, ''))) newErrors.aadharNumber = 'Aadhar number must be 12 digits';
+    if (!formData.panNumber.trim()) newErrors.panNumber = 'PAN number is required';
+    else if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(formData.panNumber.toUpperCase())) newErrors.panNumber = 'Invalid PAN format';
+    if (!formData.aadharFile) newErrors.aadharFile = 'Aadhar card upload is required';
+    if (!formData.panFile) newErrors.panFile = 'PAN card upload is required';
+    if (!formData.signature) newErrors.signature = 'Digital signature is required';
+    if (!formData.agreeTerms) newErrors.agreeTerms = 'You must agree to the terms and conditions';
+
+    return newErrors;
+  };
+
+  const handleSubmit = () => {
+    const newErrors = validateForm();
+    
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setIsSubmitted(true);
+    console.log('Form submitted:', formData);
+  };
+
+  
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 relative overflow-hidden">
-      {/* Animated Particles */}
-      <div className="fixed inset-0 pointer-events-none z-10">
-        {particles.map(particle => (
-          <div
-            key={particle.id}
-            className="absolute rounded-full bg-white opacity-10 animate-bounce"
-            style={{
-              left: `${particle.left}%`,
-              width: `${particle.size}px`,
-              height: `${particle.size}px`,
-              animationDelay: `${particle.delay}s`,
-              animationDuration: `${particle.duration}s`
-            }}
-          />
-        ))}
-      </div>
+  
+      <div className="relative z-10 min-h-screen py-8 px-4">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-white mb-2">
+              Damودaran's Trading Workshop
+            </h1>
+            <p className="text-blue-300 text-lg">Registration Form</p>
+            <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-4 rounded-full"></div>
+          </div>
 
-      {/* Grid Overlay */}
-      <div 
-        className="fixed inset-0 opacity-[0.03] z-5 pointer-events-none"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)
-          `,
-          backgroundSize: '40px 40px'
-        }}
-      />
-
-      <div className="relative z-20 container mx-auto px-4 py-8 min-h-screen flex items-center justify-center">
-        <div className="w-full max-w-4xl">
-          
-          {/* Success Message */}
-          {isSubmitted && (
-            <div className="mb-8 p-6 bg-green-500/20 backdrop-blur-lg border border-green-400/30 rounded-2xl text-center">
-              <h3 className="text-2xl font-bold text-white mb-2">🎉 Registration Successful!</h3>
-              <p className="text-green-100">Thank you for registering. You will receive a confirmation email shortly.</p>
-            </div>
-          )}
-
-          {/* Main Form Card */}
-          {!isSubmitted && (
-            <div className="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-2xl overflow-hidden">
+          {/* Form */}
+          <div className="bg-gray-800/90 backdrop-blur-md rounded-2xl p-8 border border-blue-500/20">
+            {/* Personal Information */}
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+                <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+                Personal Information
+              </h3>
               
-              {/* Header */}
-              <div className="px-8 py-10 text-center border-b border-white/10 relative">
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-                <h1 className="text-4xl md:text-5xl font-bold text-white mb-3 drop-shadow-lg">
-                  Workshop Registration
-                </h1>
-                <p className="text-xl text-white/80 font-light">
-                  Join Damodaran's Elite Trading Workshops - SimpleTricksIndia
-                </p>
+              <div className="grid md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="block text-gray-300 mb-2">First Name *</label>
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="Enter your first name"
+                  />
+                  {errors.firstName && <p className="text-red-400 text-sm mt-1">{errors.firstName}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-gray-300 mb-2">Last Name *</label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="Enter your last name"
+                  />
+                  {errors.lastName && <p className="text-red-400 text-sm mt-1">{errors.lastName}</p>}
+                </div>
               </div>
 
-              {/* Form Content */}
-              <div className="p-8">
-                <div className="space-y-8">
-                  
-                  {/* Personal Information */}
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-white/90 text-sm font-semibold mb-2">
-                        First Name <span className="text-red-400">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleInputChange}
-                        className="w-full px-5 py-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 transition-all duration-300"
-                        placeholder="Enter your first name"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-white/90 text-sm font-semibold mb-2">
-                        Last Name <span className="text-red-400">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleInputChange}
-                        className="w-full px-5 py-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 transition-all duration-300"
-                        placeholder="Enter your last name"
-                        required
-                      />
-                    </div>
-                  </div>
+              <div className="grid md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="block text-gray-300 mb-2">Email Address *</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="your.email@example.com"
+                  />
+                  {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
+                </div>
 
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-white/90 text-sm font-semibold mb-2">
-                        Email Address <span className="text-red-400">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        className="w-full px-5 py-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 transition-all duration-300"
-                        placeholder="your.email@example.com"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-white/90 text-sm font-semibold mb-2">
-                        Phone Number <span className="text-red-400">*</span>
-                      </label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        className="w-full px-5 py-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 transition-all duration-300"
-                        placeholder="+91 XXXXX XXXXX"
-                        required
-                      />
-                    </div>
-                  </div>
+                <div>
+                  <label className="block text-gray-300 mb-2">Phone Number *</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="+91 9876543210"
+                  />
+                  {errors.phone && <p className="text-red-400 text-sm mt-1">{errors.phone}</p>}
+                </div>
+              </div>
 
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-white/90 text-sm font-semibold mb-2">
-                        City <span className="text-red-400">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleInputChange}
-                        className="w-full px-5 py-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 transition-all duration-300"
-                        placeholder="Your city"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-white/90 text-sm font-semibold mb-2">
-                        Profession <span className="text-red-400">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="profession"
-                        value={formData.profession}
-                        onChange={handleInputChange}
-                        className="w-full px-5 py-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 transition-all duration-300"
-                        placeholder="Your profession"
-                        required
-                      />
-                    </div>
-                  </div>
+              <div className="mb-4">
+                <label className="block text-gray-300 mb-2">Date of Birth *</label>
+                <input
+                  type="date"
+                  name="dateOfBirth"
+                  value={formData.dateOfBirth}
+                  onChange={handleInputChange}
+                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                />
+                {errors.dateOfBirth && <p className="text-red-400 text-sm mt-1">{errors.dateOfBirth}</p>}
+              </div>
+            </div>
 
-                  {/* Trading Experience */}
-                  <div>
-                    <label className="block text-white/90 text-sm font-semibold mb-2">
-                      Trading Experience <span className="text-red-400">*</span>
-                    </label>
-                    <select
-                      name="experience"
-                      value={formData.experience}
-                      onChange={handleInputChange}
-                      className="w-full px-5 py-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 transition-all duration-300"
-                      required
-                    >
-                      <option value="" className="bg-blue-900 text-white">Select your experience level</option>
-                      <option value="beginner" className="bg-blue-900 text-white">Beginner (0-1 years)</option>
-                      <option value="intermediate" className="bg-blue-900 text-white">Intermediate (1-3 years)</option>
-                      <option value="advanced" className="bg-blue-900 text-white">Advanced (3+ years)</option>
-                      <option value="professional" className="bg-blue-900 text-white">Professional Trader</option>
-                    </select>
-                  </div>
+            {/* Address Information */}
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+                <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+                Address Information
+              </h3>
 
-                  {/* Workshop Selection */}
-                  <div>
-                    <label className="block text-white/90 text-sm font-semibold mb-4">
-                      Select Workshop <span className="text-red-400">*</span>
-                    </label>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      {workshops.map((workshop) => (
-                        <div key={workshop.id} className="relative">
-                          <input
-                            type="radio"
-                            id={workshop.id}
-                            name="workshop"
-                            value={workshop.value}
-                            checked={formData.workshop === workshop.value}
-                            onChange={handleInputChange}
-                            className="sr-only"
-                            required
-                          />
-                          <label
-                            htmlFor={workshop.id}
-                            className={`block p-6 bg-white/10 backdrop-blur-lg border rounded-2xl cursor-pointer transition-all duration-300 hover:bg-white/15 hover:scale-105 ${
-                              formData.workshop === workshop.value
-                                ? 'border-blue-400/60 bg-blue-400/20 shadow-lg shadow-blue-400/25'
-                                : 'border-white/20'
-                            }`}
-                          >
-                            <h4 className="text-white font-semibold text-lg mb-2">
-                              {workshop.title}
-                            </h4>
-                            <p className="text-white/70 text-sm">
-                              {workshop.description}
-                            </p>
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+              <div className="mb-4">
+                <label className="block text-gray-300 mb-2">Address *</label>
+                <textarea
+                  name="address"
+                  value={formData.address}
+                  onChange={handleInputChange}
+                  rows={3}
+                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  placeholder="Enter your complete address"
+                />
+                {errors.address && <p className="text-red-400 text-sm mt-1">{errors.address}</p>}
+              </div>
 
-                  {/* Additional Information */}
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-white/90 text-sm font-semibold mb-2">
-                        Preferred Workshop Date
-                      </label>
-                      <input
-                        type="date"
-                        name="preferredDate"
-                        value={formData.preferredDate}
-                        onChange={handleInputChange}
-                        className="w-full px-5 py-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 transition-all duration-300"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-white/90 text-sm font-semibold mb-2">
-                        Preferred Location
-                      </label>
-                      <select
-                        name="location"
-                        value={formData.location}
-                        onChange={handleInputChange}
-                        className="w-full px-5 py-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 transition-all duration-300"
-                      >
-                        <option value="" className="bg-blue-900 text-white">Select location</option>
-                        <option value="chennai" className="bg-blue-900 text-white">Chennai</option>
-                        <option value="bangalore" className="bg-blue-900 text-white">Bangalore</option>
-                        <option value="mumbai" className="bg-blue-900 text-white">Mumbai</option>
-                        <option value="delhi" className="bg-blue-900 text-white">Delhi</option>
-                        <option value="hyderabad" className="bg-blue-900 text-white">Hyderabad</option>
-                        <option value="online" className="bg-blue-900 text-white">Online</option>
-                      </select>
-                    </div>
-                  </div>
+              <div className="grid md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-gray-300 mb-2">City *</label>
+                  <input
+                    type="text"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleInputChange}
+                    className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="City"
+                  />
+                  {errors.city && <p className="text-red-400 text-sm mt-1">{errors.city}</p>}
+                </div>
 
-                  <div>
-                    <label className="block text-white/90 text-sm font-semibold mb-2">
-                      How did you hear about us?
-                    </label>
-                    <select
-                      name="hearAbout"
-                      value={formData.hearAbout}
-                      onChange={handleInputChange}
-                      className="w-full px-5 py-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 transition-all duration-300"
-                    >
-                      <option value="" className="bg-blue-900 text-white">Select an option</option>
-                      <option value="instagram" className="bg-blue-900 text-white">Instagram</option>
-                      <option value="youtube" className="bg-blue-900 text-white">YouTube</option>
-                      <option value="facebook" className="bg-blue-900 text-white">Facebook</option>
-                      <option value="friend" className="bg-blue-900 text-white">Friend/Referral</option>
-                      <option value="google" className="bg-blue-900 text-white">Google Search</option>
-                      <option value="other" className="bg-blue-900 text-white">Other</option>
-                    </select>
-                  </div>
+                <div>
+                  <label className="block text-gray-300 mb-2">State *</label>
+                  <input
+                    type="text"
+                    name="state"
+                    value={formData.state}
+                    onChange={handleInputChange}
+                    className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="State"
+                  />
+                  {errors.state && <p className="text-red-400 text-sm mt-1">{errors.state}</p>}
+                </div>
 
-                  <div>
-                    <label className="block text-white/90 text-sm font-semibold mb-2">
-                      What are your expectations from this workshop?
-                    </label>
-                    <textarea
-                      name="expectations"
-                      value={formData.expectations}
-                      onChange={handleInputChange}
-                      rows={4}
-                      className="w-full px-5 py-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 transition-all duration-300 resize-none"
-                      placeholder="Please share your goals and expectations..."
-                    />
-                  </div>
-
-                  {/* Terms and Conditions */}
-                  <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6">
-                    <h3 className="text-white font-bold text-lg mb-4">Terms and Conditions</h3>
-                    <div className="max-h-64 overflow-y-auto space-y-4 text-white/80 text-sm leading-relaxed">
-                      <div>
-                        <h4 className="text-white font-semibold mb-2">IMPORTANT: PLEASE READ FULLY BEFORE REGISTERING</h4>
-                      </div>
-                      
-                      <div>
-                        <h4 className="text-white font-semibold mb-2">1. Eligibility</h4>
-                        <p>• Participants must not be students. Only individuals who have completed their education and have some professional experience are eligible.</p>
-                        <p>• Must not borrow money or pledge jewels to pay for the workshop. We want to ensure that participants are financially stable.</p>
-                      </div>
-
-                      <div>
-                        <h4 className="text-white font-semibold mb-2">2. Workshop Content</h4>
-                        <p>All content provided during our workshops is the intellectual property of Damodaran & SimpleTricksIndia.</p>
-                      </div>
-
-                      <div>
-                        <h4 className="text-white font-semibold mb-2">3. Copyright and Intellectual Property</h4>
-                        <p>• All strategies, materials, and content are protected by copyright laws under Section 13 and Section 14 of the Indian Copyright Act, 1957.</p>
-                        <p>• Participants are strictly prohibited from recording, distributing, or reproducing any part of the workshop content.</p>
-                        <p>• Unauthorized use will result in legal action.</p>
-                      </div>
-
-                      <div>
-                        <h4 className="text-white font-semibold mb-2">4. Payment and Refunds</h4>
-                        <p>• All workshop fees are non-refundable, except in cases where Damodaran SimpleTricksIndia cancels the event.</p>
-                        <p>• Payment must be completed before attending the workshop.</p>
-                      </div>
-
-                      <div>
-                        <h4 className="text-white font-semibold mb-2">5. Code of Conduct</h4>
-                        <p>Participants are expected to conduct themselves professionally and respectfully. Disruptive behavior may result in removal without a refund.</p>
-                      </div>
-                    </div>
-
-                    {/* Checkboxes */}
-                    <div className="space-y-4 mt-6">
-                      <div className="flex items-start gap-3">
-                        <input
-                          type="checkbox"
-                          id="agreeTerms"
-                          name="agreeTerms"
-                          checked={formData.agreeTerms}
-                          onChange={handleInputChange}
-                          className="w-5 h-5 mt-0.5 accent-blue-400 bg-white/10 border-white/30 rounded"
-                          required
-                        />
-                        <label htmlFor="agreeTerms" className="text-white/90 text-sm">
-                          I have read and agree to the Terms and Conditions <span className="text-red-400">*</span>
-                        </label>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <input
-                          type="checkbox"
-                          id="eligibilityConfirm"
-                          name="eligibilityConfirm"
-                          checked={formData.eligibilityConfirm}
-                          onChange={handleInputChange}
-                          className="w-5 h-5 mt-0.5 accent-blue-400 bg-white/10 border-white/30 rounded"
-                          required
-                        />
-                        <label htmlFor="eligibilityConfirm" className="text-white/90 text-sm">
-                          I confirm that I meet all eligibility criteria mentioned above <span className="text-red-400">*</span>
-                        </label>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <input
-                          type="checkbox"
-                          id="financialStability"
-                          name="financialStability"
-                          checked={formData.financialStability}
-                          onChange={handleInputChange}
-                          className="w-5 h-5 mt-0.5 accent-blue-400 bg-white/10 border-white/30 rounded"
-                          required
-                        />
-                        <label htmlFor="financialStability" className="text-white/90 text-sm">
-                          I confirm that I am not borrowing money or pledging assets to pay for this workshop <span className="text-red-400">*</span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Submit Button */}
-                  <button
-                    type="button"
-                    onClick={handleSubmit}
-                    className="w-full py-5 px-8 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold text-lg rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl shadow-lg"
-                  >
-                    Register for Workshop
-                  </button>
+                <div>
+                  <label className="block text-gray-300 mb-2">Pincode *</label>
+                  <input
+                    type="text"
+                    name="pincode"
+                    value={formData.pincode}
+                    onChange={handleInputChange}
+                    className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="Pincode"
+                  />
+                  {errors.pincode && <p className="text-red-400 text-sm mt-1">{errors.pincode}</p>}
                 </div>
               </div>
             </div>
-          )}
+
+            {/* Document Upload Section */}
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+                <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+                Identity Documents (KYC)
+              </h3>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Aadhar Card Section */}
+                <div className="bg-gray-700/30 rounded-xl p-6 border border-gray-600/50">
+                  <div className="flex items-center mb-4">
+                    <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
+                      <span className="text-white font-bold text-sm">ID</span>
+                    </div>
+                    <h4 className="text-lg font-semibold text-white">Aadhar Card</h4>
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="block text-gray-300 mb-2">Aadhar Number *</label>
+                    <input
+                      type="text"
+                      name="aadharNumber"
+                      value={formData.aadharNumber}
+                      onChange={handleInputChange}
+                      className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      placeholder="XXXX XXXX XXXX"
+                      maxLength={14}
+                    />
+                    {errors.aadharNumber && <p className="text-red-400 text-sm mt-1">{errors.aadharNumber}</p>}
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="block text-gray-300 mb-2">Upload Aadhar Card *</label>
+                    <div className="relative">
+                      <input
+                        type="file"
+                        name="aadharFile"
+                        onChange={handleInputChange}
+                        accept="image/*,application/pdf"
+                        className="hidden"
+                        id="aadhar-upload"
+                      />
+                      <label
+                        htmlFor="aadhar-upload"
+                        className="w-full bg-gray-700/50 border-2 border-dashed border-gray-600 rounded-lg px-4 py-6 text-center cursor-pointer hover:border-blue-500 transition-colors flex flex-col items-center"
+                      >
+                        <svg className="w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        <span className="text-gray-300">
+                          {formData.aadharFile ? formData.aadharFile.name : 'Click to upload Aadhar'}
+                        </span>
+                        <span className="text-gray-500 text-sm mt-1">PNG, JPG or PDF (max 5MB)</span>
+                      </label>
+                    </div>
+                    {errors.aadharFile && <p className="text-red-400 text-sm mt-1">{errors.aadharFile}</p>}
+                  </div>
+                </div>
+
+                {/* PAN Card Section */}
+                <div className="bg-gray-700/30 rounded-xl p-6 border border-gray-600/50">
+                  <div className="flex items-center mb-4">
+                    <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center mr-3">
+                      <span className="text-white font-bold text-sm">PAN</span>
+                    </div>
+                    <h4 className="text-lg font-semibold text-white">PAN Card</h4>
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="block text-gray-300 mb-2">PAN Number *</label>
+                    <input
+                      type="text"
+                      name="panNumber"
+                      value={formData.panNumber}
+                      onChange={handleInputChange}
+                      className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all uppercase"
+                      placeholder="ABCDE1234F"
+                      maxLength={10}
+                    />
+                    {errors.panNumber && <p className="text-red-400 text-sm mt-1">{errors.panNumber}</p>}
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="block text-gray-300 mb-2">Upload PAN Card *</label>
+                    <div className="relative">
+                      <input
+                        type="file"
+                        name="panFile"
+                        onChange={handleInputChange}
+                        accept="image/*,application/pdf"
+                        className="hidden"
+                        id="pan-upload"
+                      />
+                      <label
+                        htmlFor="pan-upload"
+                        className="w-full bg-gray-700/50 border-2 border-dashed border-gray-600 rounded-lg px-4 py-6 text-center cursor-pointer hover:border-purple-500 transition-colors flex flex-col items-center"
+                      >
+                        <svg className="w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        <span className="text-gray-300">
+                          {formData.panFile ? formData.panFile.name : 'Click to upload PAN'}
+                        </span>
+                        <span className="text-gray-500 text-sm mt-1">PNG, JPG or PDF (max 5MB)</span>
+                      </label>
+                    </div>
+                    {errors.panFile && <p className="text-red-400 text-sm mt-1">{errors.panFile}</p>}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-4 p-4 bg-blue-900/20 rounded-lg border border-blue-500/30">
+                <div className="flex items-start space-x-3">
+                  <svg className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <div className="text-blue-200 text-sm">
+                    <p className="font-semibold mb-1">Document Requirements:</p>
+                    <ul className="space-y-1 text-blue-300">
+                      <li>• Both documents are mandatory for trading account verification</li>
+                      <li>• Ensure documents are clear and readable</li>
+                      <li>• Accepted formats: JPG, PNG, PDF (Maximum 5MB each)</li>
+                      <li>• Documents will be securely stored and used only for verification</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+                <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+                Professional Information
+              </h3>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-300 mb-2">Occupation</label>
+                  <input
+                    type="text"
+                    name="occupation"
+                    value={formData.occupation}
+                    onChange={handleInputChange}
+                    className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="Your current occupation"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-300 mb-2">Trading Experience</label>
+                  <select
+                    name="tradingExperience"
+                    value={formData.tradingExperience}
+                    onChange={handleInputChange}
+                    className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  >
+                    <option value="">Select your experience level</option>
+                    <option value="beginner">Beginner (0-1 years)</option>
+                    <option value="intermediate">Intermediate (1-3 years)</option>
+                    <option value="advanced">Advanced (3+ years)</option>
+                    <option value="professional">Professional Trader</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Workshop Information */}
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+                <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+                Workshop Information
+              </h3>
+
+              <div className="mb-4">
+                <label className="block text-gray-300 mb-2">Preferred Workshop Date *</label>
+                <select
+                  name="workshopDate"
+                  value={formData.workshopDate}
+                  onChange={handleInputChange}
+                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                >
+                  <option value="">Select workshop date</option>
+                  <option value="2025-08-15">August 15, 2025 - Weekend Batch</option>
+                  <option value="2025-08-22">August 22, 2025 - Weekend Batch</option>
+                  <option value="2025-08-29">August 29, 2025 - Weekend Batch</option>
+                  <option value="2025-09-05">September 5, 2025 - Weekday Batch</option>
+                </select>
+                {errors.workshopDate && <p className="text-red-400 text-sm mt-1">{errors.workshopDate}</p>}
+              </div>
+            </div>
+
+            {/* Emergency Contact */}
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+                <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+                Emergency Contact
+              </h3>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-300 mb-2">Contact Name *</label>
+                  <input
+                    type="text"
+                    name="emergencyContact"
+                    value={formData.emergencyContact}
+                    onChange={handleInputChange}
+                    className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="Emergency contact name"
+                  />
+                  {errors.emergencyContact && <p className="text-red-400 text-sm mt-1">{errors.emergencyContact}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-gray-300 mb-2">Contact Phone *</label>
+                  <input
+                    type="tel"
+                    name="emergencyPhone"
+                    value={formData.emergencyPhone}
+                    onChange={handleInputChange}
+                    className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="Emergency contact phone"
+                  />
+                  {errors.emergencyPhone && <p className="text-red-400 text-sm mt-1">{errors.emergencyPhone}</p>}
+                </div>
+              </div>
+            </div>
+
+            {/* Digital Signature */}
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+                <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+                Digital Signature *
+              </h3>
+              <p className="text-gray-400 mb-4">Please sign below to complete your registration:</p>
+              <SignaturePad
+                signature={formData.signature}
+                onSignatureChange={handleSignatureChange}
+              />
+              {errors.signature && <p className="text-red-400 text-sm mt-1">{errors.signature}</p>}
+            </div>
+
+            {/* Terms and Conditions */}
+            <div className="mb-8">
+              <div className="space-y-4">
+                <label className="flex items-start space-x-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="agreeTerms"
+                    checked={formData.agreeTerms}
+                    onChange={handleInputChange}
+                    className="mt-1 w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"
+                  />
+                  <span className="text-gray-300">
+                    I agree to the <span className="text-blue-400 hover:underline">Terms and Conditions</span> and 
+                    <span className="text-blue-400 hover:underline"> Privacy Policy</span>. I understand that this is a legally binding agreement. *
+                  </span>
+                </label>
+                {errors.agreeTerms && <p className="text-red-400 text-sm">{errors.agreeTerms}</p>}
+
+                <label className="flex items-start space-x-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="agreeMarketing"
+                    checked={formData.agreeMarketing}
+                    onChange={handleInputChange}
+                    className="mt-1 w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"
+                  />
+                  <span className="text-gray-300">
+                    I agree to receive marketing communications about future workshops and trading updates.
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+              >
+                Complete Registration
+              </button>
+            </div>
+            </div>
+
+          {/* Footer */}
+          <div className="text-center mt-8">
+            <p className="text-gray-400 text-sm">
+              © 2025 Trading Workshop. All rights reserved.
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    
   );
 };
 
-export default WorkshopRegistrationForm;
+export default TradingRegistrationForm;

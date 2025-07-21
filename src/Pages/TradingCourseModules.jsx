@@ -164,77 +164,77 @@ const TradingCourseModules = () => {
     ]
   };
 
-  const PaymentModal = ({ phase }) => (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-gray-900 rounded-2xl border border-gray-700 max-w-md w-full p-6">
-        <div className="text-center mb-6">
-          <h3 className="text-2xl font-bold text-white mb-2">Complete Your Payment</h3>
-          <p className="text-gray-400">Choose your preferred payment method</p>
-        </div>
+  // const PaymentModal = ({ phase }) => (
+  //   <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+  //     <div className="bg-gray-900 rounded-2xl border border-gray-700 max-w-md w-full p-6">
+  //       <div className="text-center mb-6">
+  //         <h3 className="text-2xl font-bold text-white mb-2">Complete Your Payment</h3>
+  //         <p className="text-gray-400">Choose your preferred payment method</p>
+  //       </div>
 
-        <div className="space-y-4 mb-6">
-          <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
-            <div className="flex items-center justify-between">
-              <span className="text-white font-semibold">{phase?.name || 'Selected Course'}</span>
-              <span className="text-2xl font-bold text-green-400">{phase?.price || '₹89,999'}</span>
-            </div>
-            {phase?.originalPrice && (
-              <div className="text-sm text-gray-400 mt-1">
-                <span className="line-through">{phase.originalPrice}</span>
-                <span className="text-green-400 ml-2">Save ₹{parseInt(phase.originalPrice.replace('₹', '').replace(',', '')) - parseInt(phase.price.replace('₹', '').replace(',', ''))}</span>
-              </div>
-            )}
-          </div>
+  //       <div className="space-y-4 mb-6">
+  //         <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+  //           <div className="flex items-center justify-between">
+  //             <span className="text-white font-semibold">{phase?.name || 'Selected Course'}</span>
+  //             <span className="text-2xl font-bold text-green-400">{phase?.price || '₹89,999'}</span>
+  //           </div>
+  //           {phase?.originalPrice && (
+  //             <div className="text-sm text-gray-400 mt-1">
+  //               <span className="line-through">{phase.originalPrice}</span>
+  //               <span className="text-green-400 ml-2">Save ₹{parseInt(phase.originalPrice.replace('₹', '').replace(',', '')) - parseInt(phase.price.replace('₹', '').replace(',', ''))}</span>
+  //             </div>
+  //           )}
+  //         </div>
 
-          {/* Bank Transfer */}
-          <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
-            <div className="flex items-center space-x-3 mb-3">
-              <Building className="w-6 h-6 text-blue-400" />
-              <span className="text-white font-semibold">Bank Transfer</span>
-            </div>
-            <div className="text-sm text-gray-300 space-y-1">
-              <p><strong>Bank:</strong> Karur Vysya Bank</p>
-              <p><strong>A/C Name:</strong> Muthuvel Murugan</p>
-              <p><strong>A/C No:</strong> 1173155000140451</p>
-              <p><strong>IFSC:</strong> KVBL0001173</p>
-            </div>
-          </div>
+  //         {/* Bank Transfer */}
+  //         <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+  //           <div className="flex items-center space-x-3 mb-3">
+  //             <Building className="w-6 h-6 text-blue-400" />
+  //             <span className="text-white font-semibold">Bank Transfer</span>
+  //           </div>
+  //           <div className="text-sm text-gray-300 space-y-1">
+  //             <p><strong>Bank:</strong> Karur Vysya Bank</p>
+  //             <p><strong>A/C Name:</strong> Muthuvel Murugan</p>
+  //             <p><strong>A/C No:</strong> 1173155000140451</p>
+  //             <p><strong>IFSC:</strong> KVBL0001173</p>
+  //           </div>
+  //         </div>
 
-          {/* Digital Payments */}
-          <div className="grid grid-cols-2 gap-3">
-            <button className="bg-purple-600 hover:bg-purple-700 rounded-lg p-4 flex flex-col items-center space-y-2 transition-colors">
-              <Smartphone className="w-8 h-8 text-white" />
-              <span className="text-white font-semibold">PhonePe</span>
-              <span className="text-purple-200 text-sm">9363238386</span>
-            </button>
-            <button className="bg-blue-600 hover:bg-blue-700 rounded-lg p-4 flex flex-col items-center space-y-2 transition-colors">
-              <Smartphone className="w-8 h-8 text-white" />
-              <span className="text-white font-semibold">GPay</span>
-              <span className="text-blue-200 text-sm">9363238386</span>
-            </button>
-          </div>
-        </div>
+  //         {/* Digital Payments */}
+  //         <div className="grid grid-cols-2 gap-3">
+  //           <button className="bg-purple-600 hover:bg-purple-700 rounded-lg p-4 flex flex-col items-center space-y-2 transition-colors">
+  //             <Smartphone className="w-8 h-8 text-white" />
+  //             <span className="text-white font-semibold">PhonePe</span>
+  //             <span className="text-purple-200 text-sm">9363238386</span>
+  //           </button>
+  //           <button className="bg-blue-600 hover:bg-blue-700 rounded-lg p-4 flex flex-col items-center space-y-2 transition-colors">
+  //             <Smartphone className="w-8 h-8 text-white" />
+  //             <span className="text-white font-semibold">GPay</span>
+  //             <span className="text-blue-200 text-sm">9363238386</span>
+  //           </button>
+  //         </div>
+  //       </div>
 
-        <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4 mb-4">
-          <p className="text-yellow-300 text-sm">
-            <strong>Important:</strong> After payment, send screenshot to WhatsApp: <strong>+91 9363238386</strong> for slot confirmation
-          </p>
-        </div>
+  //       <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4 mb-4">
+  //         <p className="text-yellow-300 text-sm">
+  //           <strong>Important:</strong> After payment, send screenshot to WhatsApp: <strong>+91 9363238386</strong> for slot confirmation
+  //         </p>
+  //       </div>
 
-        <div className="flex space-x-3">
-          <button 
-            onClick={() => setShowPayment(false)}
-            className="flex-1 bg-gray-700 hover:bg-gray-600 text-white py-3 rounded-lg font-semibold transition-colors"
-          >
-            Cancel
-          </button>
-          <button className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 rounded-lg font-semibold transition-colors">
-            Confirm Payment
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+  //       <div className="flex space-x-3">
+  //         <button 
+  //           onClick={() => setShowPayment(false)}
+  //           className="flex-1 bg-gray-700 hover:bg-gray-600 text-white py-3 rounded-lg font-semibold transition-colors"
+  //         >
+  //           Cancel
+  //         </button>
+  //         <button className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 rounded-lg font-semibold transition-colors">
+  //           Confirm Payment
+  //         </button>
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-blue-900 py-12 px-4">
@@ -262,7 +262,7 @@ const TradingCourseModules = () => {
           {/* Quick Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto mt-10">
             <div className="text-center">
-              <div className="text-3xl font-bold text-white">9,500+</div>
+              <div className="text-3xl font-bold text-white">350+</div>
               <div className="text-gray-400">Students Trained</div>
             </div>
             <div className="text-center">
@@ -274,62 +274,13 @@ const TradingCourseModules = () => {
               <div className="text-gray-400">Average Rating</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-white">3+</div>
+              <div className="text-3xl font-bold text-white">5+</div>
               <div className="text-gray-400">Years Experience</div>
             </div>
           </div>
         </div>
 
-        {/* All Phases Package */}
-        <div className="mb-12">
-          <div className="bg-gradient-to-r from-emerald-500/10 to-cyan-600/10 backdrop-blur-sm border border-emerald-500/30 rounded-2xl p-8 relative overflow-hidden">
-            <div className="absolute top-4 right-4 bg-gradient-to-r from-emerald-500 to-cyan-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
-              BEST VALUE
-            </div>
-            
-            <div className="grid lg:grid-cols-2 gap-8 items-center">
-              <div>
-                <h3 className="text-3xl font-bold text-white mb-2">{allPhasesPackage.name}</h3>
-                <p className="text-emerald-300 text-lg mb-4">{allPhasesPackage.subtitle}</p>
-                
-                <div className="flex items-baseline space-x-4 mb-6">
-                  <span className="text-4xl font-bold text-white">{allPhasesPackage.price}</span>
-                  <span className="text-2xl text-gray-400 line-through">{allPhasesPackage.originalPrice}</span>
-                  <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                    Save {allPhasesPackage.savings}
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 text-sm text-gray-300 mb-6">
-                  <div className="flex items-center space-x-2">
-                    <Clock className="w-4 h-4" />
-                    <span>{allPhasesPackage.duration}</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <TrendingUp className="w-4 h-4" />
-                    <span>{allPhasesPackage.level}</span>
-                  </div>
-                </div>
-
-                <button 
-                  onClick={() => {setSelectedPhase(allPhasesPackage); setShowPayment(true);}}
-                  className="bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
-                >
-                  Enroll Complete Package
-                </button>
-              </div>
-
-              <div className="space-y-3">
-                {allPhasesPackage.features.map((feature, index) => (
-                  <div key={index} className="flex items-center space-x-3">
-                    <CheckCircle className="w-5 h-5 text-emerald-400 flex-shrink-0" />
-                    <span className="text-gray-300">{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+       
 
         {/* Individual Phases */}
         <div className="grid lg:grid-cols-3 gap-8 mb-12">
@@ -418,7 +369,56 @@ const TradingCourseModules = () => {
             </div>
           ))}
         </div>
+ {/* All Phases Package */}
+        <div className="mb-12">
+          <div className="bg-gradient-to-r from-emerald-500/10 to-cyan-600/10 backdrop-blur-sm border border-emerald-500/30 rounded-2xl p-8 relative overflow-hidden">
+            <div className="absolute top-4 right-4 bg-gradient-to-r from-emerald-500 to-cyan-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+              BEST VALUE
+            </div>
+            
+            <div className="grid lg:grid-cols-2 gap-8 items-center">
+              <div>
+                <h3 className="text-3xl font-bold text-white mb-2">{allPhasesPackage.name}</h3>
+                <p className="text-emerald-300 text-lg mb-4">{allPhasesPackage.subtitle}</p>
+                
+                <div className="flex items-baseline space-x-4 mb-6">
+                  <span className="text-4xl font-bold text-white">{allPhasesPackage.price}</span>
+                  <span className="text-2xl text-gray-400 line-through">{allPhasesPackage.originalPrice}</span>
+                  <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                    Save {allPhasesPackage.savings}
+                  </span>
+                </div>
 
+                <div className="grid grid-cols-2 gap-4 text-sm text-gray-300 mb-6">
+                  <div className="flex items-center space-x-2">
+                    <Clock className="w-4 h-4" />
+                    <span>{allPhasesPackage.duration}</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <TrendingUp className="w-4 h-4" />
+                    <span>{allPhasesPackage.level}</span>
+                  </div>
+                </div>
+
+                <button 
+                  onClick={() => {setSelectedPhase(allPhasesPackage); setShowPayment(true);}}
+                  className="bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
+                >
+                  Enroll Complete Package
+                </button>
+              </div>
+
+              <div className="space-y-3">
+                {allPhasesPackage.features.map((feature, index) => (
+                  <div key={index} className="flex items-center space-x-3">
+                    <CheckCircle className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                    <span className="text-gray-300">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
         {/* Class Schedule */}
         <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 mb-12">
           <h3 className="text-3xl font-bold text-white mb-6 text-center">Upcoming Class Schedule</h3>
@@ -436,19 +436,7 @@ const TradingCourseModules = () => {
                 <p><strong>Mode:</strong> Live Online Sessions</p>
               </div>
             </div>
-            
-            <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 border border-purple-500/30 rounded-xl p-6">
-              <div className="flex items-center space-x-3 mb-4">
-                <Users className="w-6 h-6 text-purple-400" />
-                <h4 className="text-xl font-semibold text-white">Offline Classes</h4>
-              </div>
-              <div className="space-y-2 text-gray-300">
-                <p><strong>Date:</strong> September 20th</p>
-                <p><strong>Duration:</strong> Full Day Session</p>
-                <p><strong>Timing:</strong> 9 AM - 6 PM</p>
-                <p><strong>Mode:</strong> In-Person Training</p>
-              </div>
-            </div>
+          
           </div>
         </div>
 
@@ -463,7 +451,7 @@ const TradingCourseModules = () => {
               <MessageCircle className="w-5 h-5" />
               <span>WhatsApp: +91 9363238386</span>
             </a>
-            <p className="text-gray-400">Available 9 AM - 9 PM for doubts & queries</p>
+            <p className="text-gray-400">Available 3.30 PM - 8 PM for doubts & queries</p>
           </div>
         </div>
 

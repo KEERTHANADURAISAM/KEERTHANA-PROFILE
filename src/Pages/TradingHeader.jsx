@@ -69,7 +69,7 @@ const TradingHeader = () => {
           {/* Stats */}
           <div className="flex space-x-8 pt-4">
             {[
-              { label: "Students", value: "50K+" },
+              { label: "Students", value: "350+" },
               { label: "Success Rate", value: "95%" },
               { label: "Rating", value: "4.9★" }
             ].map(({ label, value }, index) => (
@@ -159,10 +159,7 @@ const TradingHeader = () => {
       <div className="relative z-10 border-t border-gray-800/50 bg-gray-900/30 backdrop-blur-sm">
         <div className="px-6 lg:px-12 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="flex items-center space-x-2 text-gray-400">
-              <Users className="w-5 h-5" />
-              <span>Join 50,000+ successful traders worldwide</span>
-            </div>
+            
             <div className="flex items-center space-x-1">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />

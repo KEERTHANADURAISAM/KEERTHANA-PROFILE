@@ -41,37 +41,39 @@ const AnimatedBackground = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-blue-900 relative overflow-hidden">
-      <div
-        className="absolute inset-0 opacity-5"
+     <div className="min-h-screen bg-gray-900 relative overflow-hidden">
+      {/* Grid Background */}
+      <div 
+        className="absolute inset-0 opacity-10"
         style={{
           backgroundImage: `
             linear-gradient(to right, #3b82f6 1px, transparent 1px),
             linear-gradient(to bottom, #3b82f6 1px, transparent 1px)
           `,
-          backgroundSize: '50px 50px'
+          backgroundSize: '40px 40px'
         }}
       />
-      
+
+      {/* Particle System */}
       <div className="absolute inset-0">
         {particles.map(particle => (
           <div
             key={particle.id}
-            className="absolute rounded-full"
+            className="absolute bg-blue-400 rounded-full"
             style={{
               left: `${particle.x}%`,
               top: `${particle.y}%`,
               width: `${particle.size}px`,
               height: `${particle.size}px`,
-              backgroundColor: particle.color,
               opacity: particle.opacity,
               transition: 'all 0.05s linear'
-              // boxShadow removed - no more shadow
             }}
           />
         ))}
       </div>
       
       {children}
+      </div>
     </div>
   );
 };
