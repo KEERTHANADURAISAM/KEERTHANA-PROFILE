@@ -168,7 +168,7 @@ const TradingRegistrationForm = () => {
 
   return (
   
-      <div className="relative z-10 min-h-screen py-8 px-4 mt-18">
+      <div className="relative z-10 min-h-screen py-8 px-4 mt-12">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
