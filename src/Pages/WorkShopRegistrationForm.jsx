@@ -88,13 +88,11 @@ const TradingRegistrationForm = () => {
     city: '',
     state: '',
     pincode: '',
-    occupation: '',
-    tradingExperience: '',
     workshopDate: '',
+    coursePackage: '',
     emergencyContact: '',
     emergencyPhone: '',
     aadharNumber: '',
-    panNumber: '',
     aadharFile: null,
     panFile: null,
     signature: null,
@@ -118,48 +116,51 @@ const TradingRegistrationForm = () => {
   };
 const validateForm = () => {
   const newErrors = {};
-
+  
   if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
   if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
-
+  
   if (!formData.email.trim()) newErrors.email = 'Email is required';
   else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
-
+  
   if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
   else if (!/^\d{10}$/.test(formData.phone)) newErrors.phone = 'Phone number must be 10 digits';
-
+  
   if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of birth is required';
-
+  
   if (!formData.address.trim()) newErrors.address = 'Address is required';
   if (!formData.city.trim()) newErrors.city = 'City is required';
   if (!formData.state.trim()) newErrors.state = 'State is required';
   if (!formData.pincode.trim()) newErrors.pincode = 'Pincode is required';
-
+  
+  // ✅ Course Package validation
+  if (!formData.coursePackage) newErrors.coursePackage = 'Please select a course package';
+  
   if (!formData.workshopDate) newErrors.workshopDate = 'Workshop date is required';
-
+  
   if (!formData.emergencyContact.trim()) newErrors.emergencyContact = 'Emergency contact is required';
   
   if (!formData.emergencyPhone.trim()) newErrors.emergencyPhone = 'Emergency phone is required';
   else if (!/^\d{10}$/.test(formData.emergencyPhone)) newErrors.emergencyPhone = 'Emergency phone must be 10 digits';
-
+  
   if (!formData.aadharNumber.trim()) newErrors.aadharNumber = 'Aadhar number is required';
   else if (!/^\d{12}$/.test(formData.aadharNumber.replace(/\s/g, ''))) newErrors.aadharNumber = 'Aadhar number must be 12 digits';
-
+  
   if (!formData.panNumber.trim()) newErrors.panNumber = 'PAN number is required';
   else if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(formData.panNumber.toUpperCase())) newErrors.panNumber = 'Invalid PAN format';
-
+  
   if (!formData.aadharFile) newErrors.aadharFile = 'Aadhar card upload is required';
   if (!formData.panFile) newErrors.panFile = 'PAN card upload is required';
-
-  // ✅ New: Signature photo upload
+  
+  // ✅ Signature photo upload
   if (!formData.signatureFile) newErrors.signatureFile = 'Signature photo upload is required';
-
-  // ✅ New: PAU ID (assumed required & numeric)
+  
+  // ✅ PAU ID validation
   if (!formData.pauId) newErrors.pauId = 'PAU ID is required';
   else if (!/^\d+$/.test(formData.pauId)) newErrors.pauId = 'PAU ID must be numeric';
-
+  
   if (!formData.agreeTerms) newErrors.agreeTerms = 'You must agree to the terms and conditions';
-
+  
   return newErrors;
 };
 
@@ -390,56 +391,7 @@ const validateForm = () => {
                   </div>
                 </div>
 
-                {/* PAN Card Section */}
-                <div className="bg-gray-700/30 rounded-xl p-6 border border-gray-600/50">
-                  <div className="flex items-center mb-4">
-                    <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center mr-3">
-                      <span className="text-white font-bold text-sm">PAN</span>
-                    </div>
-                    <h4 className="text-lg font-semibold text-white">PAN Card</h4>
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="block text-gray-300 mb-2">PAN Number *</label>
-                    <input
-                      type="text"
-                      name="panNumber"
-                      value={formData.panNumber}
-                      onChange={handleInputChange}
-                      className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all uppercase"
-                      placeholder="ABCDE1234F"
-                      maxLength={10}
-                    />
-                    {errors.panNumber && <p className="text-red-400 text-sm mt-1">{errors.panNumber}</p>}
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="block text-gray-300 mb-2">Upload PAN Card *</label>
-                    <div className="relative">
-                      <input
-                        type="file"
-                        name="panFile"
-                        onChange={handleInputChange}
-                        accept="image/*,application/pdf"
-                        className="hidden"
-                        id="pan-upload"
-                      />
-                      <label
-                        htmlFor="pan-upload"
-                        className="w-full bg-gray-700/50 border-2 border-dashed border-gray-600 rounded-lg px-4 py-6 text-center cursor-pointer hover:border-purple-500 transition-colors flex flex-col items-center"
-                      >
-                        <svg className="w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                        </svg>
-                        <span className="text-gray-300">
-                          {formData.panFile ? formData.panFile.name : 'Click to upload PAN'}
-                        </span>
-                        <span className="text-gray-500 text-sm mt-1">PNG, JPG or PDF (max 5MB)</span>
-                      </label>
-                    </div>
-                    {errors.panFile && <p className="text-red-400 text-sm mt-1">{errors.panFile}</p>}
-                  </div>
-                </div>
+               
               </div>
 
               <div className="mt-4 p-4 bg-blue-900/20 rounded-lg border border-blue-500/30">
@@ -450,7 +402,7 @@ const validateForm = () => {
                   <div className="text-blue-200 text-sm">
                     <p className="font-semibold mb-1">Document Requirements:</p>
                     <ul className="space-y-1 text-blue-300">
-                      <li>• Both documents are mandatory for trading account verification</li>
+                      <li>• Document are mandatory for trading account verification</li>
                       <li>• Ensure documents are clear and readable</li>
                       <li>• Accepted formats: JPG, PNG, PDF (Maximum 5MB each)</li>
                       <li>• Documents will be securely stored and used only for verification</li>
@@ -459,67 +411,48 @@ const validateForm = () => {
                 </div>
               </div>
             </div>
-            <div className="mb-8">
-              <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
-                <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
-                Professional Information
-              </h3>
-
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-gray-300 mb-2">Occupation</label>
-                  <input
-                    type="text"
-                    name="occupation"
-                    value={formData.occupation}
-                    onChange={handleInputChange}
-                    className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    placeholder="Your current occupation"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-gray-300 mb-2">Trading Experience</label>
-                  <select
-                    name="tradingExperience"
-                    value={formData.tradingExperience}
-                    onChange={handleInputChange}
-                    className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                  >
-                    <option value="">Select your experience level</option>
-                    <option value="beginner">Beginner (0-1 years)</option>
-                    <option value="intermediate">Intermediate (1-3 years)</option>
-                    <option value="advanced">Advanced (3+ years)</option>
-                    <option value="professional">Professional Trader</option>
-                  </select>
-                </div>
-              </div>
-            </div>
+           
 
             {/* Workshop Information */}
             <div className="mb-8">
-              <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
-                <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
-                Workshop Information
-              </h3>
+  <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+    Course Selection
+  </h3>
+  <div className="mb-4">
+    <label className="block text-gray-300 mb-2">Select Course Package *</label>
+    <select
+      name="coursePackage"
+      value={formData.coursePackage}
+      onChange={handleInputChange}
+      className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+    >
+      <option value="">Choose your course package</option>
+      <option value="foundation">Foundation Course - ₹4,999</option>
+      <option value="advanced">Advanced Course - ₹7,999</option>
+      <option value="master">Master Course - ₹12,999</option>
+      <option value="complete">Complete Package - ₹19,999</option>
+    </select>
+    {errors.coursePackage && <p className="text-red-400 text-sm mt-1">{errors.coursePackage}</p>}
+  </div>
 
-              <div className="mb-4">
-                <label className="block text-gray-300 mb-2">Preferred Workshop Date *</label>
-                <select
-                  name="workshopDate"
-                  value={formData.workshopDate}
-                  onChange={handleInputChange}
-                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                >
-                  <option value="">Select workshop date</option>
-                  <option value="2025-08-15">August 15, 2025 - Weekend Batch</option>
-                  <option value="2025-08-22">August 22, 2025 - Weekend Batch</option>
-                  <option value="2025-08-29">August 29, 2025 - Weekend Batch</option>
-                  <option value="2025-09-05">September 5, 2025 - Weekday Batch</option>
-                </select>
-                {errors.workshopDate && <p className="text-red-400 text-sm mt-1">{errors.workshopDate}</p>}
-              </div>
-            </div>
+  <div className="mb-4">
+    <label className="block text-gray-300 mb-2">Preferred Workshop Date *</label>
+    <select
+      name="workshopDate"
+      value={formData.workshopDate}
+      onChange={handleInputChange}
+      className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+    >
+      <option value="">Select workshop date</option>
+      <option value="2025-08-15">August 15, 2025 - Weekend Batch</option>
+      <option value="2025-08-22">August 22, 2025 - Weekend Batch</option>
+      <option value="2025-08-29">August 29, 2025 - Weekend Batch</option>
+      <option value="2025-09-05">September 5, 2025 - Weekday Batch</option>
+    </select>
+    {errors.workshopDate && <p className="text-red-400 text-sm mt-1">{errors.workshopDate}</p>}
+  </div>
+</div>
 
             {/* Emergency Contact */}
             <div className="mb-8">
@@ -628,11 +561,7 @@ const validateForm = () => {
             </div>
 
           {/* Footer */}
-          <div className="text-center mt-8">
-            <p className="text-gray-400 text-sm">
-              © 2025 Trading Workshop. All rights reserved.
-            </p>
-          </div>
+          
         </div>
       </div>
     

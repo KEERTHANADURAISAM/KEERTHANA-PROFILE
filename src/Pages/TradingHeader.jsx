@@ -158,7 +158,7 @@ const TradingHeader = () => {
       </div>
 
       {/* Bottom Info Bar */}
-      <div className="relative z-10 border-t border-gray-800/50 bg-gray-900/30 backdrop-blur-sm">
+      <div className="relative z-10 border-t border-gray-800/50 bg-gray-900/30 backdrop-blur-sm mt-6">
         <div className="px-6 lg:px-12 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             

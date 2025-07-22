@@ -57,14 +57,15 @@ const About = () => {
 
           {/* Right Column: Video */}
           <div className="w-full">
-            <video
-              src="/trading-demo.mp4" // <-- Replace with your actual video path
-              autoPlay
-              loop
-              muted
-              playsInline
-               className="rounded-xl w-full  h-100"
-            />
+           <video
+  src="/trading-demo.mp4"
+  autoPlay
+  loop
+  muted
+  playsInline
+  className="rounded-xl w-full max-h-92 md:max-h-80 object-cover shadow-lg border border-white/10"
+/>
+
           </div>
         </div>
       </div>

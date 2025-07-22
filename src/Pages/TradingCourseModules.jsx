@@ -30,7 +30,7 @@ const navigate = useNavigate();
       subtitle: "Basic to Intermediate",
       price: "₹19,999",
       originalPrice: "₹25,999",
-      duration: "4 Days Online",
+      duration: "2 Days Online",
       sessions: "2.5 Hours/Day",
       level: "Beginner to Intermediate",
       students: "5000+",
@@ -40,27 +40,21 @@ const navigate = useNavigate();
       borderColor: "border-blue-500/30",
       features: [
         "Basic Market Understanding",
-        "Chart Reading Fundamentals", 
-        "Technical Analysis Basics",
+       "Technical Analysis Basics",
         "Risk Management Principles",
         "Entry & Exit Strategies",
         "Psychology of Trading",
-        "Paper Trading Practice"
-      ],
+       ],
       topics: [
         "Market Basics & Terminology",
-        "Candlestick Patterns",
-        "Support & Resistance",
+        "Foundation Of Market",
         "Trend Analysis",
-        "Volume Analysis",
-        "Basic Indicators",
-        "Money Management"
-      ],
+        "Strike Selection",
+        "Greeks Understanding",
+        ],
       bonuses: [
-        "Free Trading Software",
-        "1 Month Premium Group Access",
-        "Live Market Sessions",
-        "Course Materials & PDFs"
+        "1 Month TP Premium Group Access",
+        "Live Sessions",
       ]
     },
     {
@@ -69,8 +63,8 @@ const navigate = useNavigate();
       subtitle: "Professional Trading",
       price: "₹34,999",
       originalPrice: "₹45,999",
-      duration: "6 Days Online",
-      sessions: "3 Hours/Day", 
+      duration: "3 Days Online",
+      sessions: "2.5 Hours/Day", 
       level: "Intermediate to Advanced",
       students: "3000+",
       rating: "4.9",
@@ -80,28 +74,21 @@ const navigate = useNavigate();
       popular: true,
       features: [
         "Advanced Technical Analysis",
-        "Option Trading Strategies",
+        "Manipulation Finding Strategies",
         "Time-Based Formulas",
-        "Magical Formations",
-        "Market Psychology",
-        "Live Trading Sessions",
-        "Portfolio Management"
+        "Psychology",
       ],
       topics: [
-        "Advanced Chart Patterns",
-        "Option Buying & Selling",
-        "Greeks Understanding",
-        "Strike Selection",
-        "Expiry Strategies",
-        "Swing Trading",
-        "Intraday Mastery"
+        "Insight Based Formula",
+        "Point Variation Strategies",
+        "Manipulation Finding Strategies",
+        "Roll Of Emotion",
+        "Psychology",
       ],
       bonuses: [
-        "Advanced Trading Tools",
-        "3 Months Premium Group",
-        "One-on-One Doubt Sessions",
-        "Live Market Analysis",
-        "Exclusive Trading Setups"
+        "2 Month TP Premium Group & Live Sessions",
+      
+        "Free Combination Website Paid Version"
       ]
     },
     {
@@ -110,10 +97,10 @@ const navigate = useNavigate();
       subtitle: "Expert Level Trading",
       price: "₹57,999",
       originalPrice: "₹75,999",
-      duration: "8 Days Online",
-      sessions: "3.5 Hours/Day",
+      duration: "4 Days Online",
+      sessions: "2.5 Hours/Day",
       level: "Advanced to Expert",
-      students: "1500+",
+      students: "350+",
       rating: "5.0",
       color: "from-orange-500 to-red-600",
       bgColor: "bg-gradient-to-br from-orange-500/10 to-red-600/10",
@@ -128,21 +115,16 @@ const navigate = useNavigate();
         "Consistent Profit Methods"
       ],
       topics: [
-        "Secret Formation Patterns",
-        "Timing-Based Entries",
-        "Manipulation Strike Analysis",
-        "Emotion Control Techniques",
-        "Advanced SL Strategies",
-        "Expiry Day Trading",
-        "Professional Mindset"
+       
+        "Timing-Based Formula",
+        "Option Trick",
+        "Stock Option",
+        "Stopless Smith",
+        "Change Of Mindset"
       ],
       bonuses: [
-        "Professional Trading Suite",
-        "6 Months Premium Access",
-        "Weekly One-on-One Calls",
-        "Live Portfolio Review",
-        "Exclusive Master Group",
-        "Lifetime Support"
+         "4 Months TP Premium Group Access & Live Sessions",
+         "Advanced Trend",
       ]
     }
   ];
@@ -153,18 +135,18 @@ const navigate = useNavigate();
     price: "₹89,999",
     originalPrice: "₹1,12,997",
     savings: "₹22,998",
-    duration: "18 Days Online",
+    duration: "5 Days Online",
+    sessions: "2.5 Hours/Day",
     level: "Beginner to Expert",
     color: "from-emerald-500 to-cyan-600",
     features: [
       "All Phase 1, 2 & 3 Content",
-      "Lifetime Course Access",
-      "1 Year Premium Group",
-      "Monthly Master Classes",
-      "Priority Support",
-      "Exclusive Alumni Network"
-    ]
-  };
+      "6 Month Premium TP Group Access",
+      "Live sessions",
+      "Adavnced Trend Analysis Software",
+      "Free Combination Website Paid Version"
+      
+    ]  };
 
   // const PaymentModal = ({ phase }) => (
   //   <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -403,12 +385,15 @@ const navigate = useNavigate();
                     <span>{allPhasesPackage.level}</span>
                   </div>
                 </div>
-                <button 
+         <button 
   onClick={() => {
     navigate(`/register?phase=${encodeURIComponent(allPhasesPackage)}`);
   }}
   className="bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
->Enroll Complete Package</button>
+>
+  Enroll Complete Package
+</button>
+
 
               </div>
 
@@ -424,25 +409,31 @@ const navigate = useNavigate();
           </div>
         </div>
         {/* Class Schedule */}
-        <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 mb-12">
-          <h3 className="text-3xl font-bold text-white mb-6 text-center">Upcoming Class Schedule</h3>
-          
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-xl p-6">
-              <div className="flex items-center space-x-3 mb-4">
-                <Calendar className="w-6 h-6 text-blue-400" />
-                <h4 className="text-xl font-semibold text-white">Online Classes</h4>
-              </div>
-              <div className="space-y-2 text-gray-300">
-                <p><strong>Dates:</strong> August 27, 28, 29</p>
-                <p><strong>Duration:</strong> 4 Days</p>
-                <p><strong>Timing:</strong> 2.5 Hours per Day</p>
-                <p><strong>Mode:</strong> Live Online Sessions</p>
-              </div>
-            </div>
-          
-          </div>
-        </div>
+      <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 mb-12">
+  <h3 className="text-3xl font-bold text-white mb-6 text-center">Upcoming Class Schedule</h3>
+
+  <div className="flex justify-center">
+    <div className="grid md:grid-cols-1 gap-6 w-full max-w-xl">
+      <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-xl p-6">
+       <div className="flex justify-center mb-4">
+  <div className="flex items-center space-x-3">
+    <Calendar className="w-6 h-6 text-blue-400" />
+    <h4 className="text-xl font-semibold text-white">Online Classes</h4>
+  </div>
+</div>
+
+       <div className="flex flex-col items-center space-y-2 text-gray-300">
+  <p><strong>Dates:</strong> August 25, 26, 27, 28, 29</p>
+  <p><strong>Duration:</strong> 5 Days</p>
+  <p><strong>Timing:</strong> 2.5 Hours per Day</p>
+  <p><strong>Mode:</strong> Live Online Sessions</p>
+</div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
 
         {/* Contact & Support */}
         <div className="text-center bg-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8">

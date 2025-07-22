@@ -8,10 +8,13 @@ import Navbar from "./Pages/Navbar";
 import TradingCourseModules from "./Pages/TradingCourseModules";
 import TradingHeader from "./Pages/TradingHeader";
 import TradingRegistrationForm from "./Pages/WorkShopRegistrationForm";
+import ScrollToTop from "./Pages/ScrollToTop";
+import AdminDashboard from "./Pages/AdminDashboard";
 
 function App() {
   return (
- 
+    <>
+ <ScrollToTop />
       <AnimatedBackground>
         <Navbar />
         <Routes>
@@ -27,9 +30,11 @@ function App() {
             }
           />
           <Route path="/register" element={<TradingRegistrationForm />} />
+          
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </AnimatedBackground>
-    
+    </>
   );
 }
 
