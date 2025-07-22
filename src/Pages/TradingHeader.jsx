@@ -23,7 +23,7 @@ const TradingHeader = () => {
     <>
     <div>
       {/* Main Header Content */}
-      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between lg:px-12 px-6 pt-24 lg:pt-32">
+      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between lg:px-12 px-6 mt-12 pt-24 lg:pt-32">
         {/* Left Content */}
         <div className={`lg:w-1/2 space-y-8 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
           {/* Badge */}

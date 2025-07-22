@@ -63,7 +63,7 @@ const About = () => {
               loop
               muted
               playsInline
-               className="rounded-xl w-full shadow-lg  h-100"
+               className="rounded-xl w-full  h-100"
             />
           </div>
         </div>
