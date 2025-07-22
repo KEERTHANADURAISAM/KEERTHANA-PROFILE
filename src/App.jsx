@@ -22,7 +22,7 @@ function App() {
                 <TradingHeader />
                 <About />
                 <TradingCourseModules />
-                <Contact />
+                {/* <Contact /> */}
               </>
             }
           />
