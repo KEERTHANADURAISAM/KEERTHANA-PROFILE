@@ -239,7 +239,7 @@ const navigate = useNavigate();
   // );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-blue-900 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-blue-900 py-12 px-4 mt-28">
       <div className="max-w-7xl mx-auto">
         
         {/* Header Section */}
@@ -462,9 +462,7 @@ const navigate = useNavigate();
         {/* Disclaimer */}
         <div className="mt-8 bg-gray-800/30 backdrop-blur-sm border border-gray-700/30 rounded-xl p-6">
           <p className="text-gray-400 text-sm leading-relaxed">
-            <strong>Disclaimer:</strong> All strategies and materials provided are for educational purposes only. 
-            Trading involves substantial risk of loss. Past performance does not guarantee future results. 
-            Always consult with a qualified financial advisor before making investment decisions.
+            <strong>Disclaimer:</strong> Our Investors Are The Most Important person To Us... However The Strategies, Material , Discussions In This Trading Class Are Provided Solely Educational And Informational Purposes Only. They should not be interpreted as investment, trading, or financial advice, nor as recommendations to buy or sell any financial instrument.Trading and investing And Portfolio Management Services (PMS) in the Stock market involve substantial risk, including the possible loss of principal. Past performance, strategies, or demonstrations discussed in this class may not be indicative of future results. Every participant is responsible for their own financial decisions and should consult with a qualified financial advisor before engaging in any trading or investment activity.The instructors and organizers of this class are not licensed financial advisors and expressly disclaim any liability for any losses or damages incurred as a result of the information shared herein. Participation in this class does not create a client relationship with the instructors or the organization.By participating in this class, you acknowledge and accept these terms.
           </p>
         </div>
       </div>

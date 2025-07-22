@@ -10,10 +10,13 @@ const Navbar = () => {
             
             {/* Logo/Brand */}
             <div className="flex items-center space-x-4">
-              <div className="text-2xl font-bold text-white tracking-wider" style={{fontFamily: 'Inter, system-ui, -apple-system, sans-serif'}}>
-                Keerthana Duraisamy
-              </div>
-            </div>
+  <img
+    src="/Tslogo.png" // Replace with your actual logo path
+    alt="Logo"
+    className="h-20 w-auto"
+  />
+</div>
+
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-1">

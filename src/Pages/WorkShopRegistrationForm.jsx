@@ -97,7 +97,7 @@ const TradingRegistrationForm = () => {
     panNumber: '',
     aadharFile: null,
     panFile: null,
-    signature: '',
+    signature: null,
     agreeTerms: false,
     agreeMarketing: false
   });
@@ -116,41 +116,53 @@ const TradingRegistrationForm = () => {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
   };
+const validateForm = () => {
+  const newErrors = {};
 
-  const handleSignatureChange = (signatureData) => {
-    setFormData(prev => ({ ...prev, signature: signatureData }));
-    if (errors.signature) {
-      setErrors(prev => ({ ...prev, signature: '' }));
-    }
-  };
+  if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
+  if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
 
-  const validateForm = () => {
-    const newErrors = {};
+  if (!formData.email.trim()) newErrors.email = 'Email is required';
+  else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
 
-    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
-    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
-    if (!formData.email.trim()) newErrors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
-    if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
-    if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of birth is required';
-    if (!formData.address.trim()) newErrors.address = 'Address is required';
-    if (!formData.city.trim()) newErrors.city = 'City is required';
-    if (!formData.state.trim()) newErrors.state = 'State is required';
-    if (!formData.pincode.trim()) newErrors.pincode = 'Pincode is required';
-    if (!formData.workshopDate) newErrors.workshopDate = 'Workshop date is required';
-    if (!formData.emergencyContact.trim()) newErrors.emergencyContact = 'Emergency contact is required';
-    if (!formData.emergencyPhone.trim()) newErrors.emergencyPhone = 'Emergency phone is required';
-    if (!formData.aadharNumber.trim()) newErrors.aadharNumber = 'Aadhar number is required';
-    else if (!/^\d{12}$/.test(formData.aadharNumber.replace(/\s/g, ''))) newErrors.aadharNumber = 'Aadhar number must be 12 digits';
-    if (!formData.panNumber.trim()) newErrors.panNumber = 'PAN number is required';
-    else if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(formData.panNumber.toUpperCase())) newErrors.panNumber = 'Invalid PAN format';
-    if (!formData.aadharFile) newErrors.aadharFile = 'Aadhar card upload is required';
-    if (!formData.panFile) newErrors.panFile = 'PAN card upload is required';
-    if (!formData.signature) newErrors.signature = 'Digital signature is required';
-    if (!formData.agreeTerms) newErrors.agreeTerms = 'You must agree to the terms and conditions';
+  if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
+  else if (!/^\d{10}$/.test(formData.phone)) newErrors.phone = 'Phone number must be 10 digits';
 
-    return newErrors;
-  };
+  if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of birth is required';
+
+  if (!formData.address.trim()) newErrors.address = 'Address is required';
+  if (!formData.city.trim()) newErrors.city = 'City is required';
+  if (!formData.state.trim()) newErrors.state = 'State is required';
+  if (!formData.pincode.trim()) newErrors.pincode = 'Pincode is required';
+
+  if (!formData.workshopDate) newErrors.workshopDate = 'Workshop date is required';
+
+  if (!formData.emergencyContact.trim()) newErrors.emergencyContact = 'Emergency contact is required';
+  
+  if (!formData.emergencyPhone.trim()) newErrors.emergencyPhone = 'Emergency phone is required';
+  else if (!/^\d{10}$/.test(formData.emergencyPhone)) newErrors.emergencyPhone = 'Emergency phone must be 10 digits';
+
+  if (!formData.aadharNumber.trim()) newErrors.aadharNumber = 'Aadhar number is required';
+  else if (!/^\d{12}$/.test(formData.aadharNumber.replace(/\s/g, ''))) newErrors.aadharNumber = 'Aadhar number must be 12 digits';
+
+  if (!formData.panNumber.trim()) newErrors.panNumber = 'PAN number is required';
+  else if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(formData.panNumber.toUpperCase())) newErrors.panNumber = 'Invalid PAN format';
+
+  if (!formData.aadharFile) newErrors.aadharFile = 'Aadhar card upload is required';
+  if (!formData.panFile) newErrors.panFile = 'PAN card upload is required';
+
+  // ✅ New: Signature photo upload
+  if (!formData.signatureFile) newErrors.signatureFile = 'Signature photo upload is required';
+
+  // ✅ New: PAU ID (assumed required & numeric)
+  if (!formData.pauId) newErrors.pauId = 'PAU ID is required';
+  else if (!/^\d+$/.test(formData.pauId)) newErrors.pauId = 'PAU ID must be numeric';
+
+  if (!formData.agreeTerms) newErrors.agreeTerms = 'You must agree to the terms and conditions';
+
+  return newErrors;
+};
+
 
   const handleSubmit = () => {
     const newErrors = validateForm();
@@ -168,7 +180,7 @@ const TradingRegistrationForm = () => {
 
   return (
   
-      <div className="relative z-10 min-h-screen py-8 px-4 mt-12">
+      <div className="relative z-10 min-h-screen py-8 px-4 mt-40">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
@@ -546,18 +558,29 @@ const TradingRegistrationForm = () => {
             </div>
 
             {/* Digital Signature */}
-            <div className="mb-8">
-              <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
-                <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
-                Digital Signature *
-              </h3>
-              <p className="text-gray-400 mb-4">Please sign below to complete your registration:</p>
-              <SignaturePad
-                signature={formData.signature}
-                onSignatureChange={handleSignatureChange}
-              />
-              {errors.signature && <p className="text-red-400 text-sm mt-1">{errors.signature}</p>}
-            </div>
+           <div className="mb-8">
+  <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+    Upload Signature *
+  </h3>
+  <p className="text-gray-400 mb-4">Upload a scanned image of your signature:</p>
+  
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => {
+      const file = e.target.files[0];
+      if (file) {
+        setFormData({ ...formData, signature: file });
+      }
+    }}
+    className="text-white"
+  />
+
+  {errors.signature && (
+    <p className="text-red-400 text-sm mt-1">{errors.signature}</p>
+  )}
+</div>
 
             {/* Terms and Conditions */}
             <div className="mb-8">

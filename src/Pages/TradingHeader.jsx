@@ -20,6 +20,7 @@ const TradingHeader = () => {
   }, []);
 
   return (
+    <>
     <div>
       {/* Main Header Content */}
       <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between lg:px-12 px-6 pt-24 lg:pt-32">
@@ -47,6 +48,7 @@ const TradingHeader = () => {
               </p>
             </div>
           </div>
+          
 
           {/* Description */}
           <p className="text-lg text-gray-400 max-w-lg leading-relaxed">
@@ -169,7 +171,12 @@ const TradingHeader = () => {
           </div>
         </div>
       </div>
+      
     </div>
+ 
+
+
+      </>
   );
 };
 
