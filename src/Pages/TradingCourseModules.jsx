@@ -16,11 +16,13 @@ import {
   ChevronRight,
   Gift
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const TradingCourseModules = () => {
   const [selectedPhase, setSelectedPhase] = useState(null);
   const [showPayment, setShowPayment] = useState(false);
-
+const navigate = useNavigate();
+  
   const phases = [
     {
       id: 1,
@@ -360,7 +362,9 @@ const TradingCourseModules = () => {
               </div>
 
               <button 
-                onClick={() => {setSelectedPhase(phase); setShowPayment(true);}}
+               onClick={() => {
+    navigate(`/register?phase=${encodeURIComponent(allPhasesPackage)}`);
+  }}
                 className={`w-full bg-gradient-to-r ${phase.color} hover:opacity-90 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center space-x-2`}
               >
                 <span>Enroll Phase {phase.id}</span>
@@ -399,13 +403,13 @@ const TradingCourseModules = () => {
                     <span>{allPhasesPackage.level}</span>
                   </div>
                 </div>
-
                 <button 
-                  onClick={() => {setSelectedPhase(allPhasesPackage); setShowPayment(true);}}
-                  className="bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
-                >
-                  Enroll Complete Package
-                </button>
+  onClick={() => {
+    navigate(`/register?phase=${encodeURIComponent(allPhasesPackage)}`);
+  }}
+  className="bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
+>Enroll Complete Package</button>
+
               </div>
 
               <div className="space-y-3">
@@ -466,7 +470,7 @@ const TradingCourseModules = () => {
       </div>
 
       {/* Payment Modal */}
-      {showPayment && <PaymentModal phase={selectedPhase} />}
+      {/* {showPayment && <PaymentModal phase={selectedPhase} />} */}
     </div>
   );
 };

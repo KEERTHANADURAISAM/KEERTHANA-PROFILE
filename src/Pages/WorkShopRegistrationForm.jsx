@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-
-
-
-  
-
+import { useLocation } from 'react-router-dom';
 
 
 const SignaturePad = ({ onSignatureChange, signature }) => {
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const selectedPhase = searchParams.get("phase");
+
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [lastPos, setLastPos] = useState({ x: 0, y: 0 });
@@ -167,12 +168,12 @@ const TradingRegistrationForm = () => {
 
   return (
   
-      <div className="relative z-10 min-h-screen py-8 px-4">
+      <div className="relative z-10 min-h-screen py-8 px-4 mt-18">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-white mb-2">
-              Damودaran's Trading Workshop
+            Trading Professor Course 
             </h1>
             <p className="text-blue-300 text-lg">Registration Form</p>
             <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-4 rounded-full"></div>
