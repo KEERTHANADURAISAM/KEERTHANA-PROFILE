@@ -133,7 +133,7 @@ const navigate = useNavigate();
   id: 4,
   name: "Refundable Phase",
   subtitle: "Basic to Intermediate",
-  price: "₹5,000 (100% Refundable)",
+  price: "₹5,000 Refundable",
   originalPrice: "₹25,999",
   duration: "2 Days Online",
   sessions: "2.5 Hours/Day",
@@ -158,9 +158,9 @@ const navigate = useNavigate();
     "Greeks Understanding",
   ],
   bonuses: [
-    "1 Month TP Premium Group Access",
+    
     "Live Sessions",
-    "Refer a Friend and Get 1 Month of Exclusive Group Access",
+    "Refer a Friend and Get 1 Month of Exclusive Group Access-On Us!",
     "₹5,000 Refund on Course Completion"
   ]
 }
@@ -182,7 +182,8 @@ const navigate = useNavigate();
       "6 Month Premium TP Group Access",
       "Live sessions",
       "Adavnced Trend Analysis Software",
-      "Free Combination Website Paid Version"
+      "Free Combination Website Paid Version",
+      "Invite a Friend, Unlock 4 Month of Exclusive Group Access – On Us!"
       
     ]  };
 
@@ -305,11 +306,11 @@ const navigate = useNavigate();
        
 
         {/* Individual Phases */}
-        <div className="grid lg:grid-cols-3 gap-8 mb-12">
+        <div className="grid md:grid-cols-2 gap-8 mb-12 max-w-5xl mx-auto">
           {phases.map((phase, index) => (
             <div 
               key={phase.id}
-              className={`${phase.bgColor} backdrop-blur-sm border ${phase.borderColor} rounded-2xl p-6 relative transition-all duration-300 hover:transform hover:scale-105 ${phase.popular ? 'ring-2 ring-purple-500' : ''}`}
+              className={`${phase.bgColor} backdrop-blur-sm border ${phase.borderColor} rounded-2xl p-6 relative transition-all duration-300 hover:transform hover:scale-105 ${phase.popular ? 'ring-2 ring-purple-500' : ''} max-w-md mx-auto`}
             >
               {phase.popular && (
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-1 rounded-full text-sm font-semibold">

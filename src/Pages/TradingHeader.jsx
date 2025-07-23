@@ -56,16 +56,31 @@ const TradingHeader = () => {
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-            <button className="group bg-gradient-to-r from-blue-800 to-purple-800 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2 transform hover:scale-105">
-              <span>Start Learning Now</span>
-              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
+         <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+  <a
+    href="https://www.youtube.com/@TradingProfessor-l7g"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <button className="group bg-gradient-to-r from-blue-800 to-purple-800 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2 transform hover:scale-105">
+      <span>Start Learning Now</span>
+      <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+    </button>
+  </a>
 
-            <button className="group bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2">
-              <Play className="w-5 h-5" />
-              <span>Watch Demo</span>
-            </button>
+
+
+           <a
+  href="https://www.instagram.com/trading_professor_7/?igsh=NmN1eW1zaTlrYW04&utm_source=qr"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <button className="group bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2">
+    <Play className="w-5 h-5" />
+    <span>Watch Demo</span>
+  </button>
+</a>
+
           </div>
 
           {/* Stats */}

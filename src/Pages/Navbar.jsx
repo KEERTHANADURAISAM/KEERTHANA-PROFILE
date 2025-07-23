@@ -20,7 +20,7 @@ const Navbar = () => {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-1">
-              {['Home', 'About', 'Course', 'Contact'].map((item, index) => (
+              {['Home', 'About', 'Course','Track Record'].map((item, index) => (
                 <div key={item} className="relative group">
                   <button className="px-6 py-3 text-gray-300 hover:text-white transition-all duration-300 font-medium relative overflow-hidden">
                     {/* Hover background effect */}

@@ -16,7 +16,7 @@ function App() {
   return (
     <>
  <ScrollToTop />
-  <Navbar/>
+
       <Routes>
         <Route path="/" element={<ClientPage />} /> {/* ✅ Default route is now ClientPage */}
         <Route path="/admin" element={<AdminDashboard />} />
