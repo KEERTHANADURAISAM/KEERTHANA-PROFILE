@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
+import AnimatedBackground from './AnimatedGridBackground';
 
 
 const SignaturePad = ({ onSignatureChange, signature }) => {
@@ -180,7 +181,7 @@ const validateForm = () => {
   
 
   return (
-  
+  <AnimatedBackground>
       <div className="relative z-10 min-h-screen py-8 px-4 mt-40">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
@@ -564,7 +565,7 @@ const validateForm = () => {
           
         </div>
       </div>
-    
+    </AnimatedBackground>
   );
 };
 

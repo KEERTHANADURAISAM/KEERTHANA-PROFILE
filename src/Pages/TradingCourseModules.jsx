@@ -55,6 +55,7 @@ const navigate = useNavigate();
       bonuses: [
         "1 Month TP Premium Group Access",
         "Live Sessions",
+        "Invite a Friend, Unlock 1 Month of Exclusive Group Access – On Us!"
       ]
     },
     {
@@ -87,7 +88,7 @@ const navigate = useNavigate();
       ],
       bonuses: [
         "2 Month TP Premium Group & Live Sessions",
-      
+      "Invite a Friend, Unlock 2 Month of Exclusive Group Access – On Us!",
         "Free Combination Website Paid Version"
       ]
     },
@@ -125,8 +126,45 @@ const navigate = useNavigate();
       bonuses: [
          "4 Months TP Premium Group Access & Live Sessions",
          "Advanced Trend",
+         "Invite a Friend, Unlock 3 Month of Exclusive Group Access – On Us!"
       ]
-    }
+    },
+   {
+  id: 4,
+  name: "Refundable Phase",
+  subtitle: "Basic to Intermediate",
+  price: "₹5,000 (100% Refundable)",
+  originalPrice: "₹25,999",
+  duration: "2 Days Online",
+  sessions: "2.5 Hours/Day",
+  level: "Beginner to Intermediate",
+  students: "5000+",
+  rating: "4.9",
+  color: "from-blue-500 to-purple-600",
+  bgColor: "bg-gradient-to-br from-blue-500/10 to-purple-600/10",
+  borderColor: "border-blue-500/30",
+  features: [
+    "Basic Market Understanding",
+    "Technical Analysis Basics",
+    "Risk Management Principles",
+    "Entry & Exit Strategies",
+    "Psychology of Trading",
+  ],
+  topics: [
+    "Market Basics & Terminology",
+    "Foundation Of Market",
+    "Trend Analysis",
+    "Strike Selection",
+    "Greeks Understanding",
+  ],
+  bonuses: [
+    "1 Month TP Premium Group Access",
+    "Live Sessions",
+    "Refer a Friend and Get 1 Month of Exclusive Group Access",
+    "₹5,000 Refund on Course Completion"
+  ]
+}
+
   ];
 
   const allPhasesPackage = {
