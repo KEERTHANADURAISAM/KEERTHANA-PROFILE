@@ -40,9 +40,9 @@ const About = () => {
               <div className="w-80 h-80 mx-auto bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full flex items-center justify-center border-2 border-blue-400/30">
                 <div className="w-64 h-64 bg-gray-700 rounded-full overflow-hidden">
                   <img
-                    src="/your-image-path.jpg" // <-- Replace with your actual image path
+                    src="/ceo.jpg" // <-- Replace with your actual image path
                     alt="Profile"
-                    className="object-cover w-full h-full"
+                    className="object-cover w-full h-full rotate-0"
                   />
                 </div>
               </div>

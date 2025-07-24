@@ -125,8 +125,8 @@ const navigate = useNavigate();
       ],
       bonuses: [
          "4 Months TP Premium Group Access & Live Sessions",
-         "Advanced Trend",
-         "Invite a Friend, Unlock 3 Month of Exclusive Group Access – On Us!"
+         "Advanced Trend Analysis Software",
+         "Invite a Friend, Unlock 3 Month of TP Premium Group Access – On Us!"
       ]
     },
    {
