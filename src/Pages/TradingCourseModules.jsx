@@ -131,32 +131,26 @@ const navigate = useNavigate();
     },
    {
   id: 4,
-  name: "Refundable Phase",
-  subtitle: "Basic to Intermediate",
+  name: "Complete Master Package Free",
+  subtitle: "All 3 Phases + Bonuses",
   price: "₹5,000 Refundable",
-  originalPrice: "₹25,999",
-  duration: "2 Days Online",
+  originalPrice:  "₹89,999",
+  duration: "5 Days Online",
   sessions: "2.5 Hours/Day",
   level: "Beginner to Intermediate",
-  students: "5000+",
-  rating: "4.9",
   color: "from-blue-500 to-purple-600",
   bgColor: "bg-gradient-to-br from-blue-500/10 to-purple-600/10",
   borderColor: "border-blue-500/30",
-  features: [
-    "Basic Market Understanding",
-    "Technical Analysis Basics",
-    "Risk Management Principles",
-    "Entry & Exit Strategies",
-    "Psychology of Trading",
-  ],
-  topics: [
-    "Market Basics & Terminology",
-    "Foundation Of Market",
-    "Trend Analysis",
-    "Strike Selection",
-    "Greeks Understanding",
-  ],
+ features: [
+      "All Phase 1, 2 & 3 Content",
+      "6 Month Premium TP Group Access",
+      "Live sessions",
+      "Adavnced Trend Analysis Software",
+      "Free Combination Website Paid Version",
+      "Invite a Friend, Unlock 4 Month of Exclusive Group Access – On Us!"
+      
+    ] ,
+ 
   bonuses: [
     
     "Live Sessions",
