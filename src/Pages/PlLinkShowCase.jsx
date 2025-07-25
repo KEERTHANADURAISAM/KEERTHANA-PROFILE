@@ -7,32 +7,32 @@ const PlLinkShowcase = () => {
     {
       id: 1,
       image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=250&fit=crop&auto=format",
-      url: "https://web.sensibull.com/verified-pnl/refined-furniture/17QlyWQV4R1Nt0"
+      url: "https://web.sensibull.com/verified-pnl/refined-furniture/Y4iRBLQym7M3FM?fbclid=PAQ0xDSwLsNfRleHRuA2FlbQIxMAABp9Dhl304Ooees-ZT1M9C2JJ1q5xOvkitZ659cVmwAZidVzQ9GZl2Pv86YSvR_aem_bZGWlmz80xMzjqiAiPh_bQ",
     },
     {
       id: 2,
       image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=400&h=250&fit=crop&auto=format",
-      url: "https://web.sensibull.com/verified-pnl/tech-momentum/28ABC123"
+      url: "https://web.sensibull.com/verified-pnl/refined-furniture/6HwbpJTLEKzwPD?fbclid=PAQ0xDSwLsNkhleHRuA2FlbQIxMAABpxzIezkDx06BLrrtwfysb-rTq3uLcx6Z99hIEvN2EVqlkiT5ytRWujjsvwpR_aem_14tCVQLLKTzzQhzIsfeDUA",
     },
     {
       id: 3,
       image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=250&fit=crop&auto=format",
-      url: "https://web.sensibull.com/verified-pnl/banking-calls/39XYZ789"
+      url: "https://web.sensibull.com/verified-pnl/refined-furniture/ZIW0lFPMdrLvf4?fbclid=PAQ0xDSwLsNlhleHRuA2FlbQIxMAABp1pyGK7xqnyH9K8XgWEoXf-2HW2U4ZwrhMB0uOyRBo5XUotO_zc2DjWZux1b_aem_Dbyw2M7Amp_PSbpqcmX0ZQ",
     },
     {
       id: 4,
       image: "https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=400&h=250&fit=crop&auto=format",
-      url: "https://web.sensibull.com/verified-pnl/nifty-options/44DEF456"
+      url: "https://web.sensibull.com/verified-pnl/harebrained-wolf/yjSAdQqMHH7xFk?fbclid=PAQ0xDSwLsNohleHRuA2FlbQIxMAABpxLbWT8DYIjITDpG-McExUPJB7gYBy9TguhYlW3zG5Fan29ilQniO3kn3-R4_aem_B8F56xDAO9KKGhZM13NVsA",
     },
     {
       id: 5,
       image: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=400&h=250&fit=crop&auto=format",
-      url: "https://web.sensibull.com/verified-pnl/pharma-swing/55GHI789"
+      url: "https://web.sensibull.com/verified-pnl/harebrained-wolf/3kz5rFl1JgjPZn?fbclid=PAQ0xDSwLsNq5leHRuA2FlbQIxMAABp5NZuCXJUYugLitkTmpj0-thNXCLPOUVgVU1G5etEU4f6CxeznSAnqNhi8uy_aem_S3C3NaeP_RQ-9GFyhkvyWQ",
     },
     {
       id: 6,
       image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=400&h=250&fit=crop&auto=format",
-      url: "https://web.sensibull.com/verified-pnl/energy-puts/66JKL012"
+      url: "https://web.sensibull.com/verified-pnl/refined-furniture/Y4iRBLQym7M3FM?fbclid=PAQ0xDSwLsNslleHRuA2FlbQIxMAABp5snQYEnF9X-5Khq80CiKB3RG2MEUpKbG6qiL-Zscj6kMAL8uCxtdtxYJJJN_aem_upLi8fkfmdtsLV3aLnEzRw",
     },
     {
       id: 7,
@@ -42,27 +42,27 @@ const PlLinkShowcase = () => {
     {
       id: 8,
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop&auto=format",
-      url: "https://web.sensibull.com/verified-pnl/iron-condor/88PQR678"
+      url: "https://web.sensibull.com/verified-pnl/refined-furniture/Y4iRBLQym7M3FM?fbclid=PAQ0xDSwLsNslleHRuA2FlbQIxMAABp5snQYEnF9X-5Khq80CiKB3RG2MEUpKbG6qiL-Zscj6kMAL8uCxtdtxYJJJN_aem_upLi8fkfmdtsLV3aLnEzRw"
     },
     {
       id: 9,
       image: "https://images.unsplash.com/photo-1605792657660-596af9009e82?w=400&h=250&fit=crop&auto=format",
-      url: "https://web.sensibull.com/verified-pnl/commodity/99STU901"
+      url: "https://web.sensibull.com/verified-pnl/harebrained-wolf/live-positions?fbclid=PAQ0xDSwLsNuFleHRuA2FlbQIxMAABp5NZuCXJUYugLitkTmpj0-thNXCLPOUVgVU1G5etEU4f6CxeznSAnqNhi8uy_aem_S3C3NaeP_RQ-9GFyhkvyWQ",
     },
     {
       id: 10,
       image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=250&fit=crop&auto=format",
-      url: "https://web.sensibull.com/verified-pnl/crypto-options/10VWX234"
+      url: "https://web.sensibull.com/verified-pnl/refined-furniture/6HwbpJTLEKzwPD?fbclid=PAQ0xDSwLsNwdleHRuA2FlbQIxMAABp9Dhl304Ooees-ZT1M9C2JJ1q5xOvkitZ659cVmwAZidVzQ9GZl2Pv86YSvR_aem_bZGWlmz80xMzjqiAiPh_bQ      ",
     },
     {
       id: 11,
       image: "https://images.unsplash.com/photo-1582183341317-4cf13e2d2860?w=400&h=250&fit=crop&auto=format",
-      url: "https://web.sensibull.com/verified-pnl/event-driven/11YZA567"
+      url: "https://web.sensibull.com/verified-pnl/refined-furniture/FQsiyT1xcz7LRZ?fbclid=PAQ0xDSwLsNy5leHRuA2FlbQIxMAABpxzIezkDx06BLrrtwfysb-rTq3uLcx6Z99hIEvN2EVqlkiT5ytRWujjsvwpR_aem_14tCVQLLKTzzQhzIsfeDUA",
     },
     {
       id: 12,
       image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=400&h=250&fit=crop&auto=format",
-      url: "https://web.sensibull.com/verified-pnl/volatility/12BCD890"
+      url: "https://web.sensibull.com/verified-pnl/refined-furniture/ZIW0lFPMdrLvf4?fbclid=PAQ0xDSwLsN2FleHRuA2FlbQIxMAABpxLbWT8DYIjITDpG-McExUPJB7gYBy9TguhYlW3zG5Fan29ilQniO3kn3-R4_aem_B8F56xDAO9KKGhZM13NVsA",
     }
   ];
 

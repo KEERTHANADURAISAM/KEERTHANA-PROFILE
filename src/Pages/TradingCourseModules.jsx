@@ -33,9 +33,7 @@ const navigate = useNavigate();
       duration: "2 Days Online",
       sessions: "2.5 Hours/Day",
       level: "Beginner to Intermediate",
-      students: "5000+",
-      rating: "4.9",
-      color: "from-blue-500 to-purple-600",
+        color: "from-blue-500 to-purple-600",
       bgColor: "bg-gradient-to-br from-blue-500/10 to-purple-600/10",
       borderColor: "border-blue-500/30",
       features: [
@@ -67,8 +65,6 @@ const navigate = useNavigate();
       duration: "3 Days Online",
       sessions: "2.5 Hours/Day", 
       level: "Intermediate to Advanced",
-      students: "3000+",
-      rating: "4.9",
       color: "from-purple-500 to-pink-600",
       bgColor: "bg-gradient-to-br from-purple-500/10 to-pink-600/10",
       borderColor: "border-purple-500/30",
@@ -101,8 +97,6 @@ const navigate = useNavigate();
       duration: "4 Days Online",
       sessions: "2.5 Hours/Day",
       level: "Advanced to Expert",
-      students: "350+",
-      rating: "5.0",
       color: "from-orange-500 to-red-600",
       bgColor: "bg-gradient-to-br from-orange-500/10 to-red-600/10",
       borderColor: "border-orange-500/30",
@@ -326,18 +320,12 @@ const navigate = useNavigate();
                     <Clock className="w-4 h-4" />
                     <span>{phase.duration}</span>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <Users className="w-4 h-4" />
-                    <span>{phase.students}</span>
-                  </div>
+                
                   <div className="flex items-center space-x-1">
                     <BookOpen className="w-4 h-4" />
                     <span>{phase.sessions}</span>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    <span>{phase.rating}</span>
-                  </div>
+                
                 </div>
               </div>
 
@@ -347,17 +335,20 @@ const navigate = useNavigate();
                     <BookOpen className="w-4 h-4 mr-2" />
                     Course Topics
                   </h4>
-                  <div className="space-y-2">
-                    {phase.topics.slice(0, 4).map((topic, idx) => (
-                      <div key={idx} className="flex items-center space-x-2 text-sm text-gray-300">
-                        <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
-                        <span>{topic}</span>
-                      </div>
-                    ))}
-                    {phase.topics.length > 4 && (
-                      <div className="text-sm text-gray-400">+ {phase.topics.length - 4} more topics</div>
-                    )}
-                  </div>
+                <div className="space-y-2">
+  {(phase.topics || []).slice(0, 4).map((topic, idx) => (
+    <div key={idx} className="flex items-center space-x-2 text-sm text-gray-300">
+      <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
+      <span>{topic}</span>
+    </div>
+  ))}
+  {phase.topics?.length > 4 && (
+    <div className="text-sm text-gray-400">
+      + {phase.topics.length - 4} more topics
+    </div>
+  )}
+</div>
+
                 </div>
 
                 <div>
