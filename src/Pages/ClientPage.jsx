@@ -13,9 +13,11 @@ const ClientPage = () => {
       <Navbar/>
       <TradingHeader/>
       <About/>
+       <PlLinkShowcase/>
+         <SimpleImageCarousel/>
       <TradingCourseModule/>
-      <PlLinkShowcase/>
-      <SimpleImageCarousel/>
+     
+    
     </AnimatedGridBackground>
   )
 }

@@ -75,8 +75,8 @@ const TradingHeader = () => {
   target="_blank"
   rel="noopener noreferrer"
 >
-  <button className="group bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2">
-    <Play className="w-5 h-5" />
+  <button className="group w-64 bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2">
+    <Play className="w-7 h-5" />
     <span>Watch Demo</span>
   </button>
 </a>

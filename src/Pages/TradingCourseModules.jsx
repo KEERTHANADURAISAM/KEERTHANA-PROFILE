@@ -53,7 +53,7 @@ const navigate = useNavigate();
       bonuses: [
         "1 Month TP Premium Group Access",
         "Live Sessions",
-        "Invite a Friend, Unlock 1 Month of Exclusive Group Access – On Us!"
+        "Invite a Friend, Unlock 1 Month of TP Premium Group Access – On Us!"
       ]
     },
     {
@@ -84,7 +84,7 @@ const navigate = useNavigate();
       ],
       bonuses: [
         "2 Month TP Premium Group & Live Sessions",
-      "Invite a Friend, Unlock 2 Month of Exclusive Group Access – On Us!",
+      "Invite a Friend, Unlock 2 Month of TP Premium Group Access – On Us!",
         "Free Combination Website Paid Version"
       ]
     },
@@ -123,36 +123,6 @@ const navigate = useNavigate();
          "Invite a Friend, Unlock 3 Month of TP Premium Group Access – On Us!"
       ]
     },
-   {
-  id: 4,
-  name: "Complete Master Package Free",
-  subtitle: "All 3 Phases + Bonuses",
-  price: "₹5,000 Refundable",
-  originalPrice:  "₹89,999",
-  duration: "5 Days Online",
-  sessions: "2.5 Hours/Day",
-  level: "Beginner to Intermediate",
-  color: "from-blue-500 to-purple-600",
-  bgColor: "bg-gradient-to-br from-blue-500/10 to-purple-600/10",
-  borderColor: "border-blue-500/30",
- features: [
-      "All Phase 1, 2 & 3 Content",
-      "6 Month Premium TP Group Access",
-      "Live sessions",
-      "Adavnced Trend Analysis Software",
-      "Free Combination Website Paid Version",
-      "Invite a Friend, Unlock 4 Month of Exclusive Group Access – On Us!"
-      
-    ] ,
- 
-  bonuses: [
-    
-    "Live Sessions",
-    "Refer a Friend and Get 1 Month of Exclusive Group Access-On Us!",
-    "₹5,000 Refund on Course Completion"
-  ]
-}
-
   ];
 
   const allPhasesPackage = {
@@ -174,6 +144,36 @@ const navigate = useNavigate();
       "Invite a Friend, Unlock 4 Month of Exclusive Group Access – On Us!"
       
     ]  };
+
+    const allPhasesPackageFree=   {
+  id: 4,
+  name: "Complete Master Package",
+  subtitle: "All 3 Phases + Bonuses",
+  price: "₹5,000 Refundable",
+  originalPrice:  "₹89,999",
+  duration: "5 Days Online",
+  sessions: "2.5 Hours/Day",
+  level: "Beginner to Intermediate",
+  color: "from-blue-500 to-purple-600",
+  bgColor: "bg-gradient-to-br from-blue-500/10 to-purple-600/10",
+  borderColor: "border-blue-500/30",
+ features: [
+      "All Phase 1, 2 & 3 Content",
+      "6 Month Premium TP Group Access",
+      "Live sessions",
+      "Adavnced Trend Analysis Software",
+      "Free Combination Website Paid Version",
+      "Invite a Friend, Unlock 4 Month of TP Premium Group Access – On Us!"
+      
+    ] ,
+ 
+  bonuses: [
+    
+    "Live Sessions",
+    "Refer a Friend and Get 1 Month of Exclusive Group Access-On Us!",
+    "₹5,000 Refund on Course Completion"
+  ]
+}
 
   // const PaymentModal = ({ phase }) => (
   //   <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -294,7 +294,7 @@ const navigate = useNavigate();
        
 
         {/* Individual Phases */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-8 mb-12 max-w-5xl mx-auto">
           {phases.map((phase, index) => (
             <div 
               key={phase.id}
@@ -403,6 +403,7 @@ const navigate = useNavigate();
                   <div className="flex items-center space-x-2">
                     <Clock className="w-4 h-4" />
                     <span>{allPhasesPackage.duration}</span>
+                     <span>{allPhasesPackageFree.sessions}</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <TrendingUp className="w-4 h-4" />
@@ -432,6 +433,63 @@ const navigate = useNavigate();
             </div>
           </div>
         </div>
+        {/* {All phases free package} */}
+        <div className="mb-12">
+  <div className="bg-gradient-to-br from-blue-500/10 to-purple-600/10 backdrop-blur-sm border border-blue-500/30 rounded-2xl p-8 relative overflow-hidden">
+    
+    <div className="absolute top-4 right-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+      LIMITED TIME FREE ACCESS
+    </div>
+
+    <div className="grid lg:grid-cols-2 gap-8 items-center">
+      <div>
+        <h3 className="text-3xl font-bold text-white mb-2">
+          {allPhasesPackageFree.name}
+          <span className="ml-2 text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
+            FREE
+          </span>
+        </h3>
+        <p className="text-blue-300 text-lg mb-4">{allPhasesPackageFree.subtitle}</p>
+
+        <div className="flex items-baseline space-x-4 mb-6">
+          <span className="text-xl font-bold text-white">{allPhasesPackageFree.price}</span>
+          <span className="text-lg text-gray-400 line-through">{allPhasesPackageFree.originalPrice}</span>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 text-sm text-gray-300 mb-6">
+          <div className="flex items-center space-x-2">
+            <Clock className="w-4 h-4" />
+            <span>{allPhasesPackageFree.duration}</span>
+            <span>{allPhasesPackageFree.sessions}</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <TrendingUp className="w-4 h-4" />
+            <span>{allPhasesPackageFree.level}</span>
+          </div>
+        </div>
+
+        <button
+          onClick={() => {
+            navigate(`/register?phase=${encodeURIComponent(allPhasesPackageFree.name)}`);
+          }}
+          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
+        >
+          Enroll Free Phase
+        </button>
+      </div>
+
+      <div className="space-y-3">
+        {allPhasesPackageFree.features.map((feature, index) => (
+          <div key={index} className="flex items-center space-x-3">
+            <CheckCircle className="w-5 h-5 text-blue-400 flex-shrink-0" />
+            <span className="text-gray-300">{feature}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
         {/* Class Schedule */}
       <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 mb-12">
   <h3 className="text-3xl font-bold text-white mb-6 text-center">Upcoming Class Schedule</h3>
