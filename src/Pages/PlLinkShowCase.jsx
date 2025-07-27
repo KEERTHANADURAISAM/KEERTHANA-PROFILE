@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ExternalLink, TrendingUp, Calendar, DollarSign, BarChart3, Target, Zap } from 'lucide-react';
+import { ExternalLink, TrendingUp, Calendar, DollarSign, BarChart3, Target, Zap, Send } from 'lucide-react';
+import SimpleImageCarousel from './SimpleImageCarousel';
 
 const PlLinkShowcase = () => {
   // Fixed: Using tradingCardsData instead of allPnlData
@@ -56,7 +57,7 @@ const PlLinkShowcase = () => {
     },
     {
       id: 11,
-      image: "https://images.unsplash.com/photo-1582183341317-4cf13e2d2860?w=400&h=250&fit=crop&auto=format",
+      image: "https://images.unsplash.com/photo-1634704784915-aacf363b021f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dHJhZGluZ3xlbnwwfHwwfHx8MA%3D%3D",
       url: "https://web.sensibull.com/verified-pnl/refined-furniture/FQsiyT1xcz7LRZ?fbclid=PAQ0xDSwLsNy5leHRuA2FlbQIxMAABpxzIezkDx06BLrrtwfysb-rTq3uLcx6Z99hIEvN2EVqlkiT5ytRWujjsvwpR_aem_14tCVQLLKTzzQhzIsfeDUA",
     },
     {
@@ -166,17 +167,26 @@ const PlLinkShowcase = () => {
           ))}
         </div>
 
+<SimpleImageCarousel/>
         {/* Call to Action */}
         <div className="text-center mt-16">
-          <div className="bg-gradient-to-r from-gray-800/60 to-blue-800/60 backdrop-blur-sm rounded-3xl p-8 border border-gray-600/30 max-w-4xl mx-auto">
-            <Zap className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold text-white mb-4">Ready to Start Trading?</h3>
-            <p className="text-gray-300 mb-6">Join our academy and learn the strategies behind these verified results.</p>
-            <button className="bg-gradient-to-r from-blue-500 to-gray-600 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 transform hover:scale-105">
-              Start Learning Today
-            </button>
-          </div>
-        </div>
+      <div className="bg-gradient-to-r from-gray-800/60 to-blue-800/60 backdrop-blur-sm rounded-3xl p-8 border border-gray-600/30 max-w-4xl mx-auto">
+        <Zap className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
+        <h3 className="text-2xl font-bold text-white mb-4">Ready to Start Trading?</h3>
+        <p className="text-gray-300 mb-6">Join our academy and learn the strategies behind these verified results.</p>
+        
+        <a
+          href="https://t.me/tpkgiytd"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <button className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2 mx-auto transform hover:scale-105 shadow-lg">
+            <Send className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+            <span>Join Our Telegram</span>
+          </button>
+        </a>
+      </div>
+    </div>
       </div>
     </div>
   );

@@ -30,19 +30,35 @@ const SimpleImageCarousel = () => {
       {/* 2-column layout */}
       <div className="flex flex-col md:flex-row items-center gap-10">
         {/* LEFT COLUMN - TEXT CONTENT */}
-        <div className="w-full md:w-1/2 text-white space-y-4">
-          <h2 className="text-3xl md:text-4xl font-bold leading-tight">
-            Master the Art of <span className="text-blue-400">Trading</span>
-          </h2>
-          <p className="text-lg text-gray-300">
-            Learn how to navigate the market, understand trading strategies, and grow your investments with expert guidance.
-          </p>
-          <ul className="list-disc list-inside text-gray-400 text-sm">
-            <li>Live market analysis</li>
-            <li>Trading signals & strategies</li>
-            <li>Beginner to pro courses</li>
-          </ul>
+        <div className="w-full md:w-1/2 text-white space-y-4">           
+      <h2 className="text-3xl md:text-4xl font-bold leading-tight">             
+        Turn Your <span className="text-green-400">Profits</span> Into <span className="text-blue-400">Success</span>
+      </h2>           
+      <p className="text-lg text-gray-300">             
+        Stop making emotional trades that lead to losses. Learn proven strategies to maximize profits while minimizing risks in every market condition.
+      </p>           
+      <ul className="list-disc list-inside text-gray-400 text-sm space-y-1">             
+        <li>Risk management techniques to protect your capital</li>             
+        <li>Profit booking strategies for consistent gains</li>             
+        <li>Stop-loss mastery to limit your losses</li>
+        <li>Psychology of trading - overcome fear & greed</li>           
+      </ul>
+      
+      <div className="flex items-center space-x-8 pt-4">
+        <div className="text-center">
+          <div className="text-2xl font-bold text-green-400">85%+</div>
+          <div className="text-xs text-gray-400">Success Rate</div>
         </div>
+        <div className="text-center">
+          <div className="text-2xl font-bold text-blue-400">₹50K+</div>
+          <div className="text-xs text-gray-400">Avg Monthly Profit</div>
+        </div>
+        <div className="text-center">
+          <div className="text-2xl font-bold text-orange-400">350+</div>
+          <div className="text-xs text-gray-400">Students Trained</div>
+        </div>
+      </div>
+    </div>
 
         {/* RIGHT COLUMN - CAROUSEL */}
         <div className="w-full md:w-1/2">

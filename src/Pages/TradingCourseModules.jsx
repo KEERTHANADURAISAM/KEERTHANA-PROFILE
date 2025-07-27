@@ -26,6 +26,12 @@ const TradingCourseModules = () => {
   const [showPayment, setShowPayment] = useState(false);
 const navigate = useNavigate();
 
+// watsapp
+
+ const whatsappNumber = "919363238386";
+  const message = "Hi Trading Professor! I'm interested in learning about your trading course and would like to know more about your trading learning approach. Could you please share the details?";
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
   const [expandedTopics, setExpandedTopics] = useState({}); // track per phase
 
   const toggleTopics = (id) => {
@@ -262,7 +268,7 @@ const navigate = useNavigate();
   // );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-blue-900 py-12 px-4 mt-28">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-blue-900 py-12 px-4 mt-8">
       <div className="max-w-7xl mx-auto">
         
         {/* Header Section */}
@@ -548,40 +554,71 @@ const navigate = useNavigate();
 </div>
 
         {/* Class Schedule */}
-      <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 mb-12">
-  <h3 className="text-3xl font-bold text-white mb-6 text-center">Upcoming Class Schedule</h3>
+   <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 mb-12">   
+      <h3 className="text-3xl font-bold text-white mb-6 text-center">Upcoming Class Schedule</h3>    
+      <div className="flex justify-center">     
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl">       
+          {/* August Classes */}
+          <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-xl p-6">        
+            <div className="flex justify-center mb-4">   
+              <div className="flex items-center space-x-3">     
+                <Calendar className="w-6 h-6 text-blue-400" />     
+                <h4 className="text-xl font-semibold text-white">August Online Classes</h4>   
+              </div> 
+            </div>         
+            <div className="flex flex-col items-center space-y-2 text-gray-300">   
+              <p><strong>Dates:</strong> August 25, 26, 27, 28, 29</p>   
+              <p><strong>Duration:</strong> 5 Days</p>   
+              <p><strong>Timing:</strong> 2.5 Hours per Day</p>   
+              <p><strong>Mode:</strong> Live Online Sessions</p> 
+            </div>        
+          </div>
 
-  <div className="flex justify-center">
-    <div className="grid md:grid-cols-1 gap-6 w-full max-w-xl">
-      <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-xl p-6">
-       <div className="flex justify-center mb-4">
-  <div className="flex items-center space-x-3">
-    <Calendar className="w-6 h-6 text-blue-400" />
-    <h4 className="text-xl font-semibold text-white">Online Classes</h4>
-  </div>
-</div>
+          {/* September Classes */}
+          <div className="bg-gradient-to-r from-green-600/20 to-teal-600/20 border border-green-500/30 rounded-xl p-6">        
+            <div className="flex justify-center mb-4">   
+              <div className="flex items-center space-x-3">     
+                <Calendar className="w-6 h-6 text-green-400" />     
+                <h4 className="text-xl font-semibold text-white">September Online Classes</h4>   
+              </div> 
+            </div>         
+            <div className="flex flex-col items-center space-y-2 text-gray-300">   
+              <p><strong>Dates:</strong> September 23, 24, 25, 26, 27</p>   
+              <p><strong>Duration:</strong> 5 Days</p>   
+              <p><strong>Timing:</strong> 2.5 Hours per Day</p>   
+              <p><strong>Mode:</strong> Live Online Sessions</p> 
+            </div>        
+          </div>
 
-       <div className="flex flex-col items-center space-y-2 text-gray-300">
-  <p><strong>Dates:</strong> August 25, 26, 27, 28, 29</p>
-  <p><strong>Duration:</strong> 5 Days</p>
-  <p><strong>Timing:</strong> 2.5 Hours per Day</p>
-  <p><strong>Mode:</strong> Live Online Sessions</p>
-</div>
-
-      </div>
+          {/* October Classes */}
+          <div className="bg-gradient-to-r from-orange-600/20 to-red-600/20 border border-orange-500/30 rounded-xl p-6">        
+            <div className="flex justify-center mb-4">   
+              <div className="flex items-center space-x-3">     
+                <Calendar className="w-6 h-6 text-orange-400" />     
+                <h4 className="text-xl font-semibold text-white">October Online Classes</h4>   
+              </div> 
+            </div>         
+            <div className="flex flex-col items-center space-y-2 text-gray-300">   
+              <p><strong>Dates:</strong> October 1, 2, 3, 4, 5</p>   
+              <p><strong>Duration:</strong> 5 Days</p>   
+              <p><strong>Timing:</strong> 2.5 Hours per Day</p>   
+              <p><strong>Mode:</strong> Live Online Sessions</p> 
+            </div>        
+          </div>
+        </div>   
+      </div> 
     </div>
-  </div>
-</div>
-
 
         {/* Contact & Support */}
         <div className="text-center bg-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8">
           <h3 className="text-2xl font-bold text-white mb-4">Need Help? Contact Us</h3>
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-            <a 
-              href="tel:+919363238386"
-              className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-semibold transition-colors"
-            >
+            <a                
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"               
+          className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-semibold transition-colors"             
+        > 
               <MessageCircle className="w-5 h-5" />
               <span>WhatsApp: +91 9363238386</span>
             </a>
@@ -596,9 +633,6 @@ const navigate = useNavigate();
           </p>
         </div>
       </div>
-
-      {/* Payment Modal */}
-      {/* {showPayment && <PaymentModal phase={selectedPhase} />} */}
     </div>
   );
 };

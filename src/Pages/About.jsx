@@ -56,17 +56,16 @@ const About = () => {
           </div>
 
           {/* Right Column: Video */}
-          <div className="w-full">
-           <video
-  src="/trading-demo.mp4"
-  autoPlay
-  loop
-  muted
-  playsInline
-  className="rounded-xl w-full max-h-92 md:max-h-80 object-cover shadow-lg border border-white/10"
-/>
-
-          </div>
+          <div className="w-full">            
+      <video   
+        src="/trading-demo.mp4"   
+        autoPlay   
+        loop   
+        muted   
+        playsInline   
+        className="rounded-xl w-full h-74 md:h-96 lg:h-[500px] object-cover shadow-lg border border-white/10" 
+      />            
+    </div>
         </div>
       </div>
     </div>

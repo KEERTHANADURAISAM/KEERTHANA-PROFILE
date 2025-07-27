@@ -23,7 +23,7 @@ const TradingHeader = () => {
     <>
     <div>
       {/* Main Header Content */}
-      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between lg:px-12 px-6 mt-12 pt-24 lg:pt-32">
+      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between lg:px-12 px-6 pt-20 lg:pt-32">
         {/* Left Content */}
         <div className={`lg:w-1/2 space-y-8 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
           {/* Badge */}
@@ -62,26 +62,24 @@ const TradingHeader = () => {
     target="_blank"
     rel="noopener noreferrer"
   >
-    <button className="group bg-gradient-to-r from-blue-800 to-purple-800 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2 transform hover:scale-105">
+    <button className="w-64 group bg-gradient-to-r from-blue-800 to-purple-800 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2 transform hover:scale-105">
       <span>Start Learning Now</span>
       <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
     </button>
   </a>
 
+  <a
+    href="https://www.instagram.com/trading_professor_7/?igsh=NmN1eW1zaTlrYW04&utm_source=qr"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <button className="w-64 group bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2">
+      <Play className="w-7 h-5" />
+      <span>Watch Demo</span>
+    </button>
+  </a>
+</div>
 
-
-           <a
-  href="https://www.instagram.com/trading_professor_7/?igsh=NmN1eW1zaTlrYW04&utm_source=qr"
-  target="_blank"
-  rel="noopener noreferrer"
->
-  <button className="group w-64 bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2">
-    <Play className="w-7 h-5" />
-    <span>Watch Demo</span>
-  </button>
-</a>
-
-          </div>
 
           {/* Stats */}
           <div className="flex space-x-8 pt-4">
@@ -95,6 +93,7 @@ const TradingHeader = () => {
                 <div className="text-sm text-gray-400">{label}</div>
               </div>
             ))}
+           
           </div>
         </div>
 

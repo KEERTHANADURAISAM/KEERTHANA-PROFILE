@@ -14,7 +14,7 @@ const ClientPage = () => {
       <TradingHeader/>
       <About/>
        <PlLinkShowcase/>
-         <SimpleImageCarousel/>
+         {/* <SimpleImageCarousel/> */}
       <TradingCourseModule/>
      
     
