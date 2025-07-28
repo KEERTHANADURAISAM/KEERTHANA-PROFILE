@@ -672,7 +672,7 @@ const encodedMessage = encodeURIComponent(telegramMessage);
             <div className="flex justify-center mb-4">   
               <div className="flex items-center space-x-3">     
                 <Calendar className="w-6 h-6 text-orange-400" />     
-                <h4 className="text-xl font-semibold text-white">October Online Classes</h4>   
+                <h4 className="text-xl font-semibold text-white">September Online Classes</h4>   
               </div> 
             </div>         
             <div className="flex flex-col items-center space-y-2 text-gray-300">   
