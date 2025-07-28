@@ -36,6 +36,62 @@ const navigate = useNavigate();
       },
     });
   };
+const telegramMessage = `
+Hi,
+We are pleased to confirm your Online Educational Class registration for our secret formula And
+The secret method for Trading Growth...Founder of Trading Professor
+
+At our institution,we are dedicated to teach and trainer our students with the profitable trader and formula to help them achieve their life time goal.We are committed to building long lasting friendships with our students.We look forward to working with you...!!!
+
+Class Details: 
+• Date: AUG 25th
+  SEP 1st
+  SEP 8th
+
+Online 5 Days 2:30 Hours Per Day
+
+✅ TP Premium Group Access  
+✅ LIVE Trading
+✅ LIVE Sessions
+✅ FREE Combination Website Free (Paid version)
+✅ Advanced Trend Analysis Software Free (Paid version)
+
+⚠ You don't want to miss this opportunity to not only learn how to trade right way in share market to achieve consistency profit...
+
+Topic : 
+• Market basics & Terminology
+• Foundation Of Market
+• Trend Analysis
+• Strike Selection 
+• Insight Based Formula 
+• Point Variation Strategies 
+• Time Based Formula 
+• Magical Formation 
+• Option Buying 
+• Option Trick
+• Stock Option 
+• SL Myth
+• Maniplate Find Strategies
+• Roll Of Emotion
+• Expiry Story
+• Psychology
+• Change Of Mind Set
+
+Courses & Fee: 
+• WEBSITE LINK
+• Limited Slots
+• Sent in an WhatsApp (+91 9363238386) with transaction details screenshots. Book Your Slot Confirmation
+
+If you have any doubts and details if you contact us 9363238386.
+
+Disclaimer:
+Our Investors Are The Most Important person To Us...
+(See full disclaimer above)
+`;
+
+const encodedMessage = encodeURIComponent(telegramMessage);
+  const telegramURL = `https://t.me/share/url?url=https://t.me/tpkgiytd&text=${encodedMessage}`;
+
 
 // watsapp
 
@@ -418,22 +474,15 @@ const navigate = useNavigate();
         </div>
       </div>
 
-     <button
-  onClick={() => {
-    navigate('/register', {
-      state: {
-        name: phase.name,
-        amount: phase.price, // or phase.amount if your data has that key
-      },
-    });
-  }}
-  className={`w-full bg-gradient-to-r ${phase.color} hover:opacity-90 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center space-x-2 mt-auto`}
->
-        <span>Enroll Phase {phase.id}</span>
-        <ChevronRight className="w-4 h-4" />
-      </button>
+    <a href={telegramURL} target="_blank" rel="noopener noreferrer">
+        <button className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2 mx-auto transform hover:scale-105 shadow-lg">
+          <Send className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+          <span>Join Our Telegram</span>
+        </button>
+      </a>
     </div>
   ))}
+</div>
 </div>
 {/* All Phases Package */}
 <div className="mb-12">
@@ -467,22 +516,12 @@ const navigate = useNavigate();
           </div>
         </div>
 
-        <button
-  onClick={() => {
-    navigate('/register', {
-      state: {
-        name: allPhasesPackage.name,
-        amount:allPhasesPackage.price, // or phase.amount if your data has that key
-      },
-    });
-  }}
-  
-          className="bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
-        >
-          Enroll Complete Package
+       <a href={telegramURL} target="_blank" rel="noopener noreferrer">
+        <button className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2 mx-auto transform hover:scale-105 shadow-lg">
+          <Send className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+          <span>Join Our Telegram</span>
         </button>
-      </div>
-
+      </a>
       <div className="space-y-3 mt-6 lg:mt-0">
         {allPhasesPackage.features.map((feature, index) => (
           <div key={index} className="flex items-center space-x-3">
@@ -553,19 +592,12 @@ const navigate = useNavigate();
           </ul>
         </div>
 
-             <button
-  onClick={() => {
-    navigate('/register', {
-      state: {
-        name: allPhasesPackageFree.name,
-        amount:allPhasesPackageFree.price, // or phase.amount if your data has that key
-      },
-    });
-  }}
-          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
-        >
-          Enroll Free Phase
+           <a href={telegramURL} target="_blank" rel="noopener noreferrer">
+        <button className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2 mx-auto transform hover:scale-105 shadow-lg">
+          <Send className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+          <span>Join Our Telegram</span>
         </button>
+      </a>
       </div>
 
       <div className="space-y-3 mt-6 lg:mt-0">
