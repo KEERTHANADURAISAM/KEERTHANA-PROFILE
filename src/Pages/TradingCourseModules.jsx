@@ -17,7 +17,8 @@ import {
   Gift,
   ChevronUp,
   ChevronDown,
-  Shield
+  Shield,
+  Send
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -591,7 +592,6 @@ const encodedMessage = encodeURIComponent(telegramMessage);
             </li>
           </ul>
         </div>
-
            <a href={telegramURL} target="_blank" rel="noopener noreferrer">
         <button className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2 mx-auto transform hover:scale-105 shadow-lg">
           <Send className="w-5 h-5 group-hover:rotate-12 transition-transform" />
@@ -599,7 +599,6 @@ const encodedMessage = encodeURIComponent(telegramMessage);
         </button>
       </a>
       </div>
-
       <div className="space-y-3 mt-6 lg:mt-0">
         {allPhasesPackageFree.features.map((feature, index) => (
           <div key={index} className="flex items-center space-x-3">
