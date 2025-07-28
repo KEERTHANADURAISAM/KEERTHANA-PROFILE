@@ -12,7 +12,7 @@ const Payment = () => {
     console.log('Payment button clicked!');
     
     try {
-      const res = await axios.post('http://localhost:5000/api/payments/add', {
+      const res = await axios.post('https://trading-server-ten.vercel.app/api/payments/add', {
         userName: userInfo?.name || 'Unknown User',
         courseName: courseName || 'Unknown Course',
         amount,

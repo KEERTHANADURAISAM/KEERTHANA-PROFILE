@@ -21,7 +21,7 @@ const AdminDashboard = () => {
   const fetchRegistrations = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/api/registration/all');
+      const response = await fetch('https://trading-server-ten.vercel.app/api/registration/all');
       if (!response.ok) {
         throw new Error('Failed to fetch registrations');
       }
@@ -44,7 +44,7 @@ const AdminDashboard = () => {
  useEffect(() => {
   const fetchPayments = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/payments/all');
+      const response = await fetch('https://trading-server-ten.vercel.app/api/payments/all');
       if (!response.ok) {
         throw new Error('Failed to fetch payments');
       }

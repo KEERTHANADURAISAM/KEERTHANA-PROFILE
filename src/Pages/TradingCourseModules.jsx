@@ -518,14 +518,14 @@ const encodedMessage = encodeURIComponent(telegramMessage);
         </div>
 
         <button
-  onClick={() => {
-    navigate('/register', {
-      state: {
-        name: allPhasesPackage.name,
-        amount:allPhasesPackage.price, // or phase.amount if your data has that key
-      },
-    });
-  }}
+  // onClick={() => {
+  //   navigate('/register', {
+  //     state: {
+  //       name: allPhasesPackage.name,
+  //       amount:allPhasesPackage.price, // or phase.amount if your data has that key
+  //     },
+  //   });
+  // }}
   
           className="bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
         >
@@ -604,14 +604,14 @@ const encodedMessage = encodeURIComponent(telegramMessage);
         </div>
 
              <button
-  onClick={() => {
-    navigate('/register', {
-      state: {
-        name: allPhasesPackageFree.name,
-        amount:allPhasesPackageFree.price, // or phase.amount if your data has that key
-      },
-    });
-  }}
+  // onClick={() => {
+  //   navigate('/register', {
+  //     state: {
+  //       name: allPhasesPackageFree.name,
+  //       amount:allPhasesPackageFree.price, // or phase.amount if your data has that key
+  //     },
+  //   });
+  // }}
           className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
         >
           Enroll Free Phase
@@ -676,7 +676,7 @@ const encodedMessage = encodeURIComponent(telegramMessage);
               </div> 
             </div>         
             <div className="flex flex-col items-center space-y-2 text-gray-300">   
-              <p><strong>Dates:</strong> October 7, 8, 9, 10, 11</p>   
+              <p><strong>Dates:</strong> september 7, 8, 9, 10, 11</p>   
               <p><strong>Duration:</strong> 5 Days</p>   
               <p><strong>Timing:</strong> 2.5 Hours per Day</p>   
               <p><strong>Mode:</strong> Live Online Sessions</p> 

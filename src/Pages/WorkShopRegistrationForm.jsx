@@ -128,7 +128,7 @@ const [formData, setFormData] = useState({
 }
 
 try {
-  const response = await fetch('http://localhost:5000/api/registration/submit', {
+  const response = await fetch('https://trading-server-ten.vercel.app/api/registration/submit', {
     method: 'POST',
     body: submissionData,
   });
@@ -146,7 +146,7 @@ try {
         courseName: name, // Course name
         amount: amount,   // Course amount
         userInfo: {
-          name: `${formData.firstName} ${formData.lastName}`, // ✅ User full name
+          name: `${formData.userName} ${formData.lastName}`, // ✅ User full name
           phone: formData.phone,     // ✅ User phone
           email: formData.email,     // ✅ User email
         }
