@@ -90,7 +90,7 @@ const Payment = () => {
         >
           ✅ I have paid
         </button>
-        
+        <p>"If you have completed the payment, kindly send a screenshot as confirmation of your registration."</p>
         {/* Debug button */}
         
       </div>

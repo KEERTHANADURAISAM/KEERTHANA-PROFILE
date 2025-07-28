@@ -50,7 +50,7 @@ const SimpleImageCarousel = () => {
           <div className="text-xs text-gray-400">Success Rate</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-blue-400">₹50K+</div>
+          <div className="text-2xl font-bold text-blue-400">2LK</div>
           <div className="text-xs text-gray-400">Avg Monthly Profit</div>
         </div>
         <div className="text-center">

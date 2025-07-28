@@ -32,6 +32,7 @@ const navigate = useNavigate();
       state: {
         name: course.name,
         amount: course.price,
+
       },
     });
   };
@@ -470,8 +471,8 @@ const navigate = useNavigate();
   onClick={() => {
     navigate('/register', {
       state: {
-        name: phase.name,
-        amount: phase.price, // or phase.amount if your data has that key
+        name: allPhasesPackage.name,
+        amount:allPhasesPackage.price, // or phase.amount if your data has that key
       },
     });
   }}
@@ -604,7 +605,7 @@ const navigate = useNavigate();
               </div> 
             </div>         
             <div className="flex flex-col items-center space-y-2 text-gray-300">   
-              <p><strong>Dates:</strong> September 23, 24, 25, 26, 27</p>   
+              <p><strong>Dates:</strong> September 1, 2, 3, 4, 5</p>   
               <p><strong>Duration:</strong> 5 Days</p>   
               <p><strong>Timing:</strong> 2.5 Hours per Day</p>   
               <p><strong>Mode:</strong> Live Online Sessions</p> 
@@ -620,7 +621,7 @@ const navigate = useNavigate();
               </div> 
             </div>         
             <div className="flex flex-col items-center space-y-2 text-gray-300">   
-              <p><strong>Dates:</strong> October 1, 2, 3, 4, 5</p>   
+              <p><strong>Dates:</strong> October 7, 8, 9, 10, 11</p>   
               <p><strong>Duration:</strong> 5 Days</p>   
               <p><strong>Timing:</strong> 2.5 Hours per Day</p>   
               <p><strong>Mode:</strong> Live Online Sessions</p> 
