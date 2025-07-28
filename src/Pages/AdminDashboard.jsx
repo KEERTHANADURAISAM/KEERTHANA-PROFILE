@@ -1,83 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Users, BookOpen, Settings, TrendingUp, Plus, Edit, Trash2, Eye, Search, Filter, Download, Menu, X, Bell, User } from 'lucide-react';
+import { Users, BookOpen, Settings, TrendingUp, Plus, Edit, Trash2, Eye, Search, Filter, Download, Menu, X, Bell, User, DollarSign } from 'lucide-react';
+import AnimatedBackground from './AnimatedGridBackground';
 
-const AnimatedBackground = ({ children }) => {
-  const [particles, setParticles] = useState([]);
 
-  useEffect(() => {
-    const generateParticles = () => {
-      const newParticles = [];
-      for (let i = 0; i < 60; i++) {
-        newParticles.push({
-          id: i,
-          x: Math.random() * 100,
-          y: Math.random() * 100,
-          size: Math.random() * 4 + 2,
-          speedX: (Math.random() - 0.5) * 0.3,
-          speedY: (Math.random() - 0.5) * 0.3,
-          opacity: Math.random() * 0.6 + 0.2,
-          color: '#3b82f6' // Blue color
-        });
-      }
-      setParticles(newParticles);
-    };
-
-    generateParticles();
-  }, []);
-
-  useEffect(() => {
-    const animateParticles = () => {
-      setParticles(prevParticles =>
-        prevParticles.map(particle => ({
-          ...particle,
-          x: (particle.x + particle.speedX + 100) % 100,
-          y: (particle.y + particle.speedY + 100) % 100
-        }))
-      );
-    };
-
-    const interval = setInterval(animateParticles, 50);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-blue-900 relative overflow-hidden">
-      <div className="min-h-screen bg-gray-900 relative overflow-hidden">
-        {/* Grid Background */}
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right, #3b82f6 1px, transparent 1px),
-              linear-gradient(to bottom, #3b82f6 1px, transparent 1px)
-            `,
-            backgroundSize: '40px 40px'
-          }}
-        />
-
-        {/* Particle System */}
-        <div className="absolute inset-0">
-          {particles.map(particle => (
-            <div
-              key={particle.id}
-              className="absolute bg-blue-400 rounded-full"
-              style={{
-                left: `${particle.x}%`,
-                top: `${particle.y}%`,
-                width: `${particle.size}px`,
-                height: `${particle.size}px`,
-                opacity: particle.opacity,
-                transition: 'all 0.05s linear'
-              }}
-            />
-          ))}
-        </div>
-        
-        {children}
-      </div>
-    </div>
-  );
-};
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -86,14 +11,53 @@ const AdminDashboard = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingCourse, setEditingCourse] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [payments, setPayments] = useState([]);
+  const [registrations, setRegistrations] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  // Sample data - in real app, this would come from your backend
-  const [registrations, setRegistrations] = useState([
-    { id: 1, name: 'Rahul Kumar', email: 'rahul@email.com', phone: '9876543210', course: 'Basic Trading', status: 'active', joinDate: '2024-01-15', progress: 75 },
-    { id: 2, name: 'Priya Sharma', email: 'priya@email.com', phone: '9876543211', course: 'Advanced Trading', status: 'active', joinDate: '2024-01-18', progress: 45 },
-    { id: 3, name: 'Amit Patel', email: 'amit@email.com', phone: '9876543212', course: 'Options Trading', status: 'pending', joinDate: '2024-01-20', progress: 0 },
-    { id: 4, name: 'Sneha Reddy', email: 'sneha@email.com', phone: '9876543213', course: 'Crypto Trading', status: 'completed', joinDate: '2023-12-10', progress: 100 },
-  ]);
+  // Fetch registrations
+ useEffect(() => {
+  const fetchRegistrations = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('http://localhost:5000/api/registration/all');
+      if (!response.ok) {
+        throw new Error('Failed to fetch registrations');
+      }
+      const data = await response.json();
+      setRegistrations(Array.isArray(data.registrations) ? data.registrations : []);
+    } catch (err) {
+      console.error('Failed to fetch registrations:', err);
+      setError('Failed to load registrations');
+      setRegistrations([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchRegistrations();
+}, []);
+
+
+  // Fetch payments
+ useEffect(() => {
+  const fetchPayments = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/payments/all');
+      if (!response.ok) {
+        throw new Error('Failed to fetch payments');
+      }
+      const data = await response.json();
+      setPayments(Array.isArray(data.payments) ? data.payments : []); // ✅ This will set payments to []
+    } catch (err) {
+      console.error('Failed to fetch payments:', err);
+      setPayments([]);
+    }
+  };
+
+  fetchPayments();
+}, []);
 
   const [courses, setCourses] = useState([
     { id: 1, title: 'Basic Trading Fundamentals', duration: '4 weeks', price: '₹5,999', students: 156, status: 'active', description: 'Learn the basics of stock market trading' },
@@ -105,16 +69,23 @@ const AdminDashboard = () => {
   const stats = {
     totalStudents: registrations.length,
     activeCourses: courses.filter(c => c.status === 'active').length,
-    totalRevenue: '₹2,45,670',
+    totalRevenue: payments.reduce((sum, payment) => sum + (payment.amount || 0), 0),
     completionRate: '78%'
   };
 
   const filteredRegistrations = registrations.filter(reg => {
-    const matchesSearch = reg.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         reg.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         reg.course.toLowerCase().includes(searchTerm.toLowerCase());
+    if (!reg) return false;
+    const matchesSearch = (reg.name?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                         (reg.email?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                         (reg.course?.toLowerCase() || '').includes(searchTerm.toLowerCase());
     const matchesStatus = selectedStatus === 'all' || reg.status === selectedStatus;
     return matchesSearch && matchesStatus;
+  });
+
+  const filteredPayments = payments.filter(payment => {
+    if (!payment) return false;
+    return (payment.name?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+           (payment.email?.toLowerCase() || '').includes(searchTerm.toLowerCase());
   });
 
   const handleEditCourse = (course) => {
@@ -133,7 +104,21 @@ const AdminDashboard = () => {
       case 'active': return 'bg-green-100 text-green-800';
       case 'pending': return 'bg-yellow-100 text-yellow-800';
       case 'completed': return 'bg-blue-100 text-blue-800';
+      case 'success': return 'bg-green-100 text-green-800';
+      case 'failed': return 'bg-red-100 text-red-800';
       case 'draft': return 'bg-gray-100 text-gray-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getPaymentStatusColor = (status) => {
+    switch(status?.toLowerCase()) {
+      case 'success':
+      case 'completed':
+      case 'paid': return 'bg-green-100 text-green-800';
+      case 'pending': return 'bg-yellow-100 text-yellow-800';
+      case 'failed':
+      case 'rejected': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -158,11 +143,11 @@ const AdminDashboard = () => {
   return (
     <AnimatedBackground>
       {/* Top Navbar */}
-      <nav className="fixed top-0 left-0 right-0 bg-white/10 backdrop-blur-md border-b border-white/20 z-50">
+      {/* <nav className="fixed top-0 left-0 right-0 bg-white/10 backdrop-blur-md border-b border-white/20 z-50"> */}
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Left side */}
-            <div className="flex items-center">
+            <div className="flex items-center mt-2">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -172,27 +157,27 @@ const AdminDashboard = () => {
               >
                 {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
-              <div className="flex items-center ml-2 lg:ml-0">
+              <div className="flex items-center ml-2 lg:ml-0 mt-8">
                 <TrendingUp className="h-8 w-8 text-blue-400 mr-2" />
                 <span className="text-xl font-bold text-white hidden sm:block">Trading Academy</span>
               </div>
             </div>
 
             {/* Right side */}
-            <div className="flex items-center space-x-4">
-              <button className="p-2 rounded-full text-white hover:bg-white/20 transition-colors">
-                <Bell className="h-5 w-5" />
+            {/* <div className="flex items-center space-x-4">
+              <button className="p-2 text-white hover:bg-white/20 rounded-md">
+                <Bell className="h-6 w-6" />
               </button>
-              <button className="p-2 rounded-full text-white hover:bg-white/20 transition-colors">
-                <User className="h-5 w-5" />
+              <button className="p-2 text-white hover:bg-white/20 rounded-md">
+                <User className="h-6 w-6" />
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
-      </nav>
+      {/* </nav> */}
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 w-64 bg-white/10 backdrop-blur-md border-r border-white/20 transform transition-transform duration-300 ease-in-out z-40 ${
+      <div className={`fixed mt-8 inset-y-0 left-0 w-64 bg-white/10 backdrop-blur-md border-r border-white/20 transform transition-transform duration-300 ease-in-out z-40 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       } lg:translate-x-0 pt-16`}>
         <div className="p-6">
@@ -239,6 +224,20 @@ const AdminDashboard = () => {
               <BookOpen className="h-5 w-5 mr-3" />
               Course Management
             </button>
+            <button
+              onClick={() => {
+                setActiveTab('payments');
+                setSidebarOpen(false);
+              }}
+              className={`w-full flex items-center px-4 py-3 text-left rounded-lg transition-colors ${
+                activeTab === 'payments' 
+                  ? 'bg-blue-600/20 text-blue-300 border border-blue-500/30' 
+                  : 'text-white/70 hover:bg-white/10 hover:text-white'
+              }`}
+            >
+              <DollarSign className="h-5 w-5 mr-3" />
+              Payments
+            </button>
           </nav>
         </div>
       </div>
@@ -250,6 +249,13 @@ const AdminDashboard = () => {
           <h2 className="text-2xl lg:text-3xl font-bold text-white">Admin Dashboard</h2>
           <p className="text-white/70 mt-2">Manage your trading academy efficiently</p>
         </div>
+
+        {/* Error Display */}
+        {error && (
+          <div className="mb-4 p-4 bg-red-500/20 border border-red-500/30 rounded-lg text-red-300">
+            {error}
+          </div>
+        )}
 
         {/* Overview Tab */}
         {activeTab === 'overview' && (
@@ -278,7 +284,7 @@ const AdminDashboard = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-white/70">Total Revenue</p>
-                    <p className="text-2xl lg:text-3xl font-bold text-white">{stats.totalRevenue}</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-white">₹{stats.totalRevenue.toLocaleString()}</p>
                   </div>
                   <TrendingUp className="h-8 lg:h-10 w-8 lg:w-10 text-purple-400" />
                 </div>
@@ -297,24 +303,30 @@ const AdminDashboard = () => {
             {/* Recent Activity */}
             <div className="bg-white/10 backdrop-blur-md rounded-xl border border-white/20 p-4 lg:p-6">
               <h3 className="text-lg lg:text-xl font-semibold text-white mb-4">Recent Registrations</h3>
-              <div className="space-y-3 lg:space-y-4">
-                {registrations.slice(0, 3).map(reg => (
-                  <div key={reg.id} className="flex items-center justify-between p-3 lg:p-4 bg-white/5 rounded-lg">
-                    <div className="flex items-center space-x-3 lg:space-x-4">
-                      <div className="w-8 lg:w-10 h-8 lg:h-10 bg-blue-600/20 rounded-full flex items-center justify-center">
-                        <span className="text-blue-300 font-semibold text-sm lg:text-base">{reg.name.charAt(0)}</span>
+              {loading ? (
+                <p className="text-white/70">Loading...</p>
+              ) : registrations.length === 0 ? (
+                <p className="text-white/70">No registrations found</p>
+              ) : (
+                <div className="space-y-3 lg:space-y-4">
+                  {registrations.slice(0, 3).map(reg => (
+                    <div key={reg.id || reg._id} className="flex items-center justify-between p-3 lg:p-4 bg-white/5 rounded-lg">
+                      <div className="flex items-center space-x-3 lg:space-x-4">
+                        <div className="w-8 lg:w-10 h-8 lg:h-10 bg-blue-600/20 rounded-full flex items-center justify-center">
+                          <span className="text-blue-300 font-semibold text-sm lg:text-base">{reg.name?.charAt(0) || 'N'}</span>
+                        </div>
+                        <div>
+                          <p className="font-medium text-white text-sm lg:text-base">{reg.name || 'Unknown'}</p>
+                          <p className="text-xs lg:text-sm text-white/70">{reg.course || 'No course'}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-medium text-white text-sm lg:text-base">{reg.name}</p>
-                        <p className="text-xs lg:text-sm text-white/70">{reg.course}</p>
-                      </div>
+                      <span className={`px-2 lg:px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(reg.status || 'pending')}`}>
+                        {reg.status || 'pending'}
+                      </span>
                     </div>
-                    <span className={`px-2 lg:px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(reg.status)}`}>
-                      {reg.status}
-                    </span>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -358,120 +370,128 @@ const AdminDashboard = () => {
 
             {/* Students Table - Mobile Cards / Desktop Table */}
             <div className="bg-white/10 backdrop-blur-md rounded-xl border border-white/20 overflow-hidden">
-              {/* Mobile View - Cards */}
-              <div className="lg:hidden">
-                {filteredRegistrations.map(reg => (
-                  <div key={reg.id} className="p-4 border-b border-white/10 last:border-b-0">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-10 h-10 bg-blue-600/20 rounded-full flex items-center justify-center">
-                          <span className="text-blue-300 font-medium">{reg.name.charAt(0)}</span>
-                        </div>
-                        <div>
-                          <p className="font-medium text-white">{reg.name}</p>
-                          <p className="text-sm text-white/70">{reg.email}</p>
-                        </div>
-                      </div>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(reg.status)}`}>
-                        {reg.status}
-                      </span>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2 text-sm mb-3">
-                      <div>
-                        <span className="text-white/70">Course:</span>
-                        <p className="text-white">{reg.course}</p>
-                      </div>
-                      <div>
-                        <span className="text-white/70">Join Date:</span>
-                        <p className="text-white">{reg.joinDate}</p>
-                      </div>
-                    </div>
-                    <div className="mb-3">
-                      <div className="flex justify-between text-sm mb-1">
-                        <span className="text-white/70">Progress</span>
-                        <span className="text-white">{reg.progress}%</span>
-                      </div>
-                      <div className="w-full bg-white/20 rounded-full h-2">
-                        <div
-                          className="bg-blue-400 h-2 rounded-full"
-                          style={{ width: `${reg.progress}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                    <div className="flex space-x-2">
-                      <button className="p-2 text-blue-400 hover:bg-blue-600/20 rounded">
-                        <Eye className="h-4 w-4" />
-                      </button>
-                      <button className="p-2 text-green-400 hover:bg-green-600/20 rounded">
-                        <Edit className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Desktop View - Table */}
-              <div className="hidden lg:block overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-white/5">
-                    <tr>
-                      <th className="px-6 py-4 text-left text-sm font-medium text-white">Student</th>
-                      <th className="px-6 py-4 text-left text-sm font-medium text-white">Contact</th>
-                      <th className="px-6 py-4 text-left text-sm font-medium text-white">Course</th>
-                      <th className="px-6 py-4 text-left text-sm font-medium text-white">Join Date</th>
-                      <th className="px-6 py-4 text-left text-sm font-medium text-white">Progress</th>
-                      <th className="px-6 py-4 text-left text-sm font-medium text-white">Status</th>
-                      <th className="px-6 py-4 text-left text-sm font-medium text-white">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/10">
+              {loading ? (
+                <div className="p-8 text-center text-white/70">Loading registrations...</div>
+              ) : filteredRegistrations.length === 0 ? (
+                <div className="p-8 text-center text-white/70">No registrations found</div>
+              ) : (
+                <>
+                  {/* Mobile View - Cards */}
+                  <div className="lg:hidden">
                     {filteredRegistrations.map(reg => (
-                      <tr key={reg.id} className="hover:bg-white/5">
-                        <td className="px-6 py-4">
+                      <div key={reg.id || reg._id} className="p-4 border-b border-white/10 last:border-b-0">
+                        <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center space-x-3">
-                            <div className="w-8 h-8 bg-blue-600/20 rounded-full flex items-center justify-center">
-                              <span className="text-blue-300 font-medium text-sm">{reg.name.charAt(0)}</span>
+                            <div className="w-10 h-10 bg-blue-600/20 rounded-full flex items-center justify-center">
+                              <span className="text-blue-300 font-medium">{reg.name?.charAt(0) || 'N'}</span>
                             </div>
-                            <span className="font-medium text-white">{reg.name}</span>
+                            <div>
+                              <p className="font-medium text-white">{reg.name || 'Unknown'}</p>
+                              <p className="text-sm text-white/70">{reg.email || 'No email'}</p>
+                            </div>
                           </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="text-sm">
-                            <p className="text-white">{reg.email}</p>
-                            <p className="text-white/70">{reg.phone}</p>
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(reg.status || 'pending')}`}>
+                            {reg.status || 'pending'}
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2 text-sm mb-3">
+                          <div>
+                            <span className="text-white/70">Course:</span>
+                            <p className="text-white">{reg.course || 'No course'}</p>
                           </div>
-                        </td>
-                        <td className="px-6 py-4 text-sm text-white">{reg.course}</td>
-                        <td className="px-6 py-4 text-sm text-white">{reg.joinDate}</td>
-                        <td className="px-6 py-4">
+                          <div>
+                            <span className="text-white/70">Join Date:</span>
+                            <p className="text-white">{reg.joinDate || reg.createdAt ? new Date(reg.joinDate || reg.createdAt).toLocaleDateString() : 'Unknown'}</p>
+                          </div>
+                        </div>
+                        <div className="mb-3">
+                          <div className="flex justify-between text-sm mb-1">
+                            <span className="text-white/70">Progress</span>
+                            <span className="text-white">{reg.progress || 0}%</span>
+                          </div>
                           <div className="w-full bg-white/20 rounded-full h-2">
                             <div
                               className="bg-blue-400 h-2 rounded-full"
-                              style={{ width: `${reg.progress}%` }}
+                              style={{ width: `${reg.progress || 0}%` }}
                             ></div>
                           </div>
-                          <span className="text-sm text-white/70 mt-1">{reg.progress}%</span>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(reg.status)}`}>
-                            {reg.status}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex space-x-2">
-                            <button className="p-1 text-blue-400 hover:bg-blue-600/20 rounded">
-                              <Eye className="h-4 w-4" />
-                            </button>
-                            <button className="p-1 text-green-400 hover:bg-green-600/20 rounded">
-                              <Edit className="h-4 w-4" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
+                        </div>
+                        <div className="flex space-x-2">
+                          <button className="p-2 text-blue-400 hover:bg-blue-600/20 rounded">
+                            <Eye className="h-4 w-4" />
+                          </button>
+                          <button className="p-2 text-green-400 hover:bg-green-600/20 rounded">
+                            <Edit className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </div>
                     ))}
-                  </tbody>
-                </table>
-              </div>
+                  </div>
+
+                  {/* Desktop View - Table */}
+                  <div className="hidden lg:block overflow-x-auto">
+                    <table className="w-full">
+                      <thead className="bg-white/5">
+                        <tr>
+                          <th className="px-6 py-4 text-left text-sm font-medium text-white">Student</th>
+                          <th className="px-6 py-4 text-left text-sm font-medium text-white">Contact</th>
+                          <th className="px-6 py-4 text-left text-sm font-medium text-white">Course</th>
+                          <th className="px-6 py-4 text-left text-sm font-medium text-white">Join Date</th>
+                          <th className="px-6 py-4 text-left text-sm font-medium text-white">Progress</th>
+                          <th className="px-6 py-4 text-left text-sm font-medium text-white">Status</th>
+                          <th className="px-6 py-4 text-left text-sm font-medium text-white">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-white/10">
+                        {filteredRegistrations.map(reg => (
+                          <tr key={reg.id || reg._id} className="hover:bg-white/5">
+                            <td className="px-6 py-4">
+                              <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 bg-blue-600/20 rounded-full flex items-center justify-center">
+                                  <span className="text-blue-300 font-medium text-sm">{reg.name?.charAt(0) || 'N'}</span>
+                                </div>
+                                <span className="font-medium text-white">{reg.name || 'Unknown'}</span>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className="text-sm">
+                                <p className="text-white">{reg.email || 'No email'}</p>
+                                <p className="text-white/70">{reg.phone || 'No phone'}</p>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 text-sm text-white">{reg.course || 'No course'}</td>
+                            <td className="px-6 py-4 text-sm text-white">{reg.joinDate || reg.createdAt ? new Date(reg.joinDate || reg.createdAt).toLocaleDateString() : 'Unknown'}</td>
+                            <td className="px-6 py-4">
+                              <div className="w-full bg-white/20 rounded-full h-2">
+                                <div
+                                  className="bg-blue-400 h-2 rounded-full"
+                                  style={{ width: `${reg.progress || 0}%` }}
+                                ></div>
+                              </div>
+                              <span className="text-sm text-white/70 mt-1">{reg.progress || 0}%</span>
+                            </td>
+                            <td className="px-6 py-4">
+                              <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(reg.status || 'pending')}`}>
+                                {reg.status || 'pending'}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className="flex space-x-2">
+                                <button className="p-1 text-blue-400 hover:bg-blue-600/20 rounded">
+                                  <Eye className="h-4 w-4" />
+                                </button>
+                                <button className="p-1 text-green-400 hover:bg-green-600/20 rounded">
+                                  <Edit className="h-4 w-4" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         )}
@@ -530,6 +550,196 @@ const AdminDashboard = () => {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* Payments Tab */}
+        {activeTab === 'payments' && (
+          <div>
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+              <h3 className="text-xl lg:text-2xl font-bold text-white">Payment Records</h3>
+              <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <Download className="h-4 w-4 mr-2" />
+                Export Payments
+              </button>
+            </div>
+
+            {/* Filters */}
+            <div className="bg-white/10 backdrop-blur-md rounded-xl border border-white/20 p-4 lg:p-6 mb-4 lg:mb-6">
+              <div className="flex flex-col sm:flex-row gap-3 lg:gap-4">
+                <div className="flex-1">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-3 h-4 w-4 text-white/50" />
+                    <input
+                      type="text"
+                      placeholder="Search payments..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+                </div>
+                <div className="flex gap-2 sm:gap-3">
+                  <select
+                    value={selectedStatus}
+                    onChange={(e) => setSelectedStatus(e.target.value)}
+                    className="px-3 lg:px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="all">All Status</option>
+                    <option value="success">Success</option>
+                    <option value="pending">Pending</option>
+                    <option value="failed">Failed</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Payments Stats */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6 mb-6 lg:mb-8">
+              <div className="bg-white/10 backdrop-blur-md p-4 lg:p-6 rounded-xl border border-white/20">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-white/70">Total Payments</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-white">{payments.length}</p>
+                  </div>
+                  <DollarSign className="h-8 lg:h-10 w-8 lg:w-10 text-green-400" />
+                </div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md p-4 lg:p-6 rounded-xl border border-white/20">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-white/70">Successful Payments</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-white">
+                      {payments.filter(p => p.paymentStatus?.toLowerCase() === 'success' || p.status?.toLowerCase() === 'success').length}
+                    </p>
+                  </div>
+                  <TrendingUp className="h-8 lg:h-10 w-8 lg:w-10 text-blue-400" />
+                </div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md p-4 lg:p-6 rounded-xl border border-white/20">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-white/70">Total Revenue</p>
+                    <p className="text-2xl lg:text-3xl font-bold text-white">
+                      ₹{payments.filter(p => p.paymentStatus?.toLowerCase() === 'success' || p.status?.toLowerCase() === 'success')
+                        .reduce((sum, payment) => sum + (payment.amount || 0), 0).toLocaleString()}
+                    </p>
+                  </div>
+                  <Users className="h-8 lg:h-10 w-8 lg:w-10 text-purple-400" />
+                </div>
+              </div>
+            </div>
+
+            {/* Payments Table */}
+            <div className="bg-white/10 backdrop-blur-md rounded-xl border border-white/20 overflow-hidden">
+              {payments.length === 0 ? (
+                <div className="p-8 text-center text-white/70">No payment records found</div>
+              ) : (
+                <>
+                  {/* Mobile View - Cards */}
+                  <div className="lg:hidden">
+                    {filteredPayments.map((payment, idx) => (
+                      <div key={payment.id || payment._id || idx} className="p-4 border-b border-white/10 last:border-b-0">
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center space-x-3">
+                            <div className="w-10 h-10 bg-green-600/20 rounded-full flex items-center justify-center">
+                              <DollarSign className="h-5 w-5 text-green-300" />
+                            </div>
+                            <div>
+                              <p className="font-medium text-white">{payment.name || 'Unknown'}</p>
+                              <p className="text-sm text-white/70">{payment.email || 'No email'}</p>
+                            </div>
+                          </div>
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPaymentStatusColor(payment.paymentStatus || payment.status)}`}>
+                            {payment.paymentStatus || payment.status || 'unknown'}
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2 text-sm mb-3">
+                          <div>
+                            <span className="text-white/70">Amount:</span>
+                            <p className="text-white font-semibold">₹{payment.amount?.toLocaleString() || '0'}</p>
+                          </div>
+                          <div>
+                            <span className="text-white/70">Date:</span>
+                            <p className="text-white">{payment.createdAt ? new Date(payment.createdAt).toLocaleDateString() : 'Unknown'}</p>
+                          </div>
+                        </div>
+                        <div className="text-sm">
+                          <span className="text-white/70">Course:</span>
+                          <p className="text-white">{payment.course || 'No course specified'}</p>
+                        </div>
+                        {payment.transactionId && (
+                          <div className="text-sm mt-2">
+                            <span className="text-white/70">Transaction ID:</span>
+                            <p className="text-white text-xs font-mono">{payment.transactionId}</p>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Desktop View - Table */}
+                  <div className="hidden lg:block overflow-x-auto">
+                    <table className="w-full">
+                      <thead className="bg-white/5">
+                        <tr>
+                          <th className="px-6 py-4 text-left text-sm font-medium text-white">Customer</th>
+                          <th className="px-6 py-4 text-left text-sm font-medium text-white">Amount</th>
+                          <th className="px-6 py-4 text-left text-sm font-medium text-white">Course</th>
+                          <th className="px-6 py-4 text-left text-sm font-medium text-white">Status</th>
+                          <th className="px-6 py-4 text-left text-sm font-medium text-white">Date</th>
+                          <th className="px-6 py-4 text-left text-sm font-medium text-white">Transaction ID</th>
+                          <th className="px-6 py-4 text-left text-sm font-medium text-white">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-white/10">
+                        {filteredPayments.map((payment, idx) => (
+                          <tr key={payment.id || payment._id || idx} className="hover:bg-white/5">
+                            <td className="px-6 py-4">
+                              <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 bg-green-600/20 rounded-full flex items-center justify-center">
+                                  <span className="text-green-300 font-medium text-sm">{payment.name?.charAt(0) || 'U'}</span>
+                                </div>
+                                <div>
+                                  <p className="font-medium text-white">{payment.name || 'Unknown'}</p>
+                                  <p className="text-sm text-white/70">{payment.email || 'No email'}</p>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4">
+                              <span className="text-lg font-semibold text-white">₹{payment.amount?.toLocaleString() || '0'}</span>
+                            </td>
+                            <td className="px-6 py-4 text-sm text-white">{payment.course || 'No course specified'}</td>
+                            <td className="px-6 py-4">
+                              <span className={`px-3 py-1 rounded-full text-xs font-medium ${getPaymentStatusColor(payment.paymentStatus || payment.status)}`}>
+                                {payment.paymentStatus || payment.status || 'unknown'}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 text-sm text-white">
+                              {payment.createdAt ? new Date(payment.createdAt).toLocaleDateString() : 'Unknown'}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-white font-mono">
+                              {payment.transactionId ? payment.transactionId.substring(0, 12) + '...' : 'N/A'}
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className="flex space-x-2">
+                                <button className="p-1 text-blue-400 hover:bg-blue-600/20 rounded">
+                                  <Eye className="h-4 w-4" />
+                                </button>
+                                <button className="p-1 text-green-400 hover:bg-green-600/20 rounded">
+                                  <Download className="h-4 w-4" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         )}

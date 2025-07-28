@@ -26,6 +26,16 @@ const TradingCourseModules = () => {
   const [showPayment, setShowPayment] = useState(false);
 const navigate = useNavigate();
 
+
+  const handleEnroll = (course) => {
+    navigate('/register', {
+      state: {
+        name: course.name,
+        amount: course.price,
+      },
+    });
+  };
+
 // watsapp
 
  const whatsappNumber = "919363238386";
@@ -195,7 +205,7 @@ const navigate = useNavigate();
   ]
 }
 
-  // const PaymentModal = ({ phase }) => (
+  
   //   <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
   //     <div className="bg-gray-900 rounded-2xl border border-gray-700 max-w-md w-full p-6">
   //       <div className="text-center mb-6">
@@ -407,12 +417,17 @@ const navigate = useNavigate();
         </div>
       </div>
 
-      <button
-        onClick={() => {
-          navigate(`/register?phase=${encodeURIComponent(phase.name)}`);
-        }}
-        className={`w-full bg-gradient-to-r ${phase.color} hover:opacity-90 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center space-x-2 mt-auto`}
-      >
+     <button
+  onClick={() => {
+    navigate('/register', {
+      state: {
+        name: phase.name,
+        amount: phase.price, // or phase.amount if your data has that key
+      },
+    });
+  }}
+  className={`w-full bg-gradient-to-r ${phase.color} hover:opacity-90 text-white py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center space-x-2 mt-auto`}
+>
         <span>Enroll Phase {phase.id}</span>
         <ChevronRight className="w-4 h-4" />
       </button>
@@ -451,10 +466,16 @@ const navigate = useNavigate();
           </div>
         </div>
 
-        <button 
-          onClick={() => {
-            navigate(`/register?phase=${encodeURIComponent(allPhasesPackage)}`);
-          }}
+        <button
+  onClick={() => {
+    navigate('/register', {
+      state: {
+        name: phase.name,
+        amount: phase.price, // or phase.amount if your data has that key
+      },
+    });
+  }}
+  
           className="bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
         >
           Enroll Complete Package

@@ -10,11 +10,12 @@ import TradingHeader from "./Pages/TradingHeader";
 import PlLinkShowcase from "./Pages/PlLinkShowCase";
 import Footer from "./Pages/Footer";
 import AnimatedBackground from "./Pages/AnimatedGridBackground";
+import Payment from "./Pages/Payment";
 
 
 function Layout({ children }) {
   const location = useLocation();
-  const hideNavFooter = location.pathname === '/register';
+  const hideNavFooter = location.pathname === ['/register', '/admin'].includes(location.pathname);
 
   return (
     <>
@@ -34,13 +35,14 @@ function App() {
       <AnimatedBackground>
       <Layout>
         <Routes>
-          <Route path="/" element={<TradingHeader />} />
+          <Route path="/" element={<ClientPage />} />
           <Route path="/about" element={<About />} />
           {/* <Route path="/contact" element={<Contact />} /> */}
           <Route path="/course" element={<TradingCourseModules />} />
           <Route path="/p&lrecords" element={<PlLinkShowcase />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/register" element={<TradingRegistrationForm />} />
+          <Route path="/payment" element={<Payment/>}/>
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Layout>

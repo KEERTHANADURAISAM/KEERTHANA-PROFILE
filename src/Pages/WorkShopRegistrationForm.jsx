@@ -1,24 +1,31 @@
 import React, { useState, useEffect, useRef } from 'react';
 import AnimatedBackground from './AnimatedGridBackground';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
 const TradingRegistrationForm = () => {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    dateOfBirth: '',
-    address: '',
-    city: '',
-    state: '',
-    pincode: '',
-    aadharNumber: '',
-    aadharFile: null,
-    signatureFile: null, // Added missing signature file field
-    signature: null,
-    agreeTerms: false,
-    agreeMarketing: false
-  });
+
+const location = useLocation();
+const { name, amount } = location.state || {}
+const navigate=useNavigate()
+
+
+const [formData, setFormData] = useState({
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  dateOfBirth: '',
+  address: '',
+  city: '',
+  state: '',
+  pincode: '',
+  aadharNumber: '',
+  aadharFile: null,
+  signatureFile: null,
+  agreeTerms: false,
+  agreeMarketing: false
+});
+
 
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -39,19 +46,12 @@ const TradingRegistrationForm = () => {
       state: formData.state,
       pincode: formData.pincode
     });
-    console.log('Course Info:', {
-      workshopDate: formData.workshopDate,
-      coursePackage: formData.coursePackage,
-      emergencyContact: formData.emergencyContact,
-      emergencyPhone: formData.emergencyPhone
-    });
+   
     console.log('Documents:', {
       aadharNumber: formData.aadharNumber,
       aadharFile: formData.aadharFile?.name || 'Not uploaded',
-      panNumber: formData.panNumber,
-      panFile: formData.panFile?.name || 'Not uploaded',
       signatureFile: formData.signatureFile?.name || 'Not uploaded',
-      pauId: formData.pauId
+      
     });
     console.log('Agreements:', {
       agreeTerms: formData.agreeTerms,
@@ -79,68 +79,88 @@ const TradingRegistrationForm = () => {
   };
 
   const validateForm = () => {
-    const newErrors = {};
-    
-    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
-    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
-    
-    if (!formData.email.trim()) newErrors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
-    
-    if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
-    else if (!/^\d{10}$/.test(formData.phone)) newErrors.phone = 'Phone number must be 10 digits';
-    
-    if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of birth is required';
-    
-    if (!formData.address.trim()) newErrors.address = 'Address is required';
-    if (!formData.city.trim()) newErrors.city = 'City is required';
-    if (!formData.state.trim()) newErrors.state = 'State is required';
-    if (!formData.pincode.trim()) newErrors.pincode = 'Pincode is required';
-    
-    if (!formData.coursePackage) newErrors.coursePackage = 'Please select a course package';
-    if (!formData.workshopDate) newErrors.workshopDate = 'Workshop date is required';
-    
-    if (!formData.emergencyContact.trim()) newErrors.emergencyContact = 'Emergency contact is required';
-    if (!formData.emergencyPhone.trim()) newErrors.emergencyPhone = 'Emergency phone is required';
-    else if (!/^\d{10}$/.test(formData.emergencyPhone)) newErrors.emergencyPhone = 'Emergency phone must be 10 digits';
-    
-    if (!formData.aadharNumber.trim()) newErrors.aadharNumber = 'Aadhar number is required';
-    else if (!/^\d{12}$/.test(formData.aadharNumber.replace(/\s/g, ''))) newErrors.aadharNumber = 'Aadhar number must be 12 digits';
-    
-    if (!formData.panNumber.trim()) newErrors.panNumber = 'PAN number is required';
-    else if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(formData.panNumber.toUpperCase())) newErrors.panNumber = 'Invalid PAN format';
-    
-    if (!formData.aadharFile) newErrors.aadharFile = 'Aadhar card upload is required';
-    if (!formData.panFile) newErrors.panFile = 'PAN card upload is required';
-    if (!formData.signatureFile) newErrors.signatureFile = 'Signature photo upload is required';
-    
-    if (!formData.pauId) newErrors.pauId = 'PAU ID is required';
-    else if (!/^\d+$/.test(formData.pauId)) newErrors.pauId = 'PAU ID must be numeric';
-    
-    if (!formData.agreeTerms) newErrors.agreeTerms = 'You must agree to the terms and conditions';
-    
-    return newErrors;
-  };
+  const newErrors = {};
 
-  const handleSubmit = () => {
-    const newErrors = validateForm();
-    
-    console.log('🚀 FORM SUBMISSION ATTEMPT');
-    console.log('Validation Errors:', newErrors);
-    
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      console.log('❌ Form has errors, submission blocked');
-      return;
-    }
+  if (!formData?.firstName?.trim()) newErrors.firstName = 'First name is required';
+  if (!formData?.lastName?.trim()) newErrors.lastName = 'Last name is required';
 
+  if (!formData?.email?.trim()) newErrors.email = 'Email is required';
+  else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
+
+  if (!formData?.phone?.trim()) newErrors.phone = 'Phone number is required';
+  else if (!/^\d{10}$/.test(formData.phone)) newErrors.phone = 'Phone number must be 10 digits';
+
+  if (!formData?.dateOfBirth) newErrors.dateOfBirth = 'Date of birth is required';
+
+  if (!formData?.address?.trim()) newErrors.address = 'Address is required';
+  if (!formData?.city?.trim()) newErrors.city = 'City is required';
+  if (!formData?.state?.trim()) newErrors.state = 'State is required';
+  if (!formData?.pincode?.trim()) newErrors.pincode = 'Pincode is required';
+
+
+   if (!formData?.aadharNumber?.trim()) newErrors.aadharNumber = 'Aadhar number is required';
+  else if (!/^\d{12}$/.test(formData.aadharNumber?.replace(/\s/g, ''))) newErrors.aadharNumber = 'Aadhar number must be 12 digits';
+  if (!formData?.aadharFile) newErrors.aadharFile = 'Aadhar card upload is required';
+  if (!formData?.signatureFile) newErrors.signatureFile = 'Signature photo upload is required';
+
+  if (!formData?.agreeTerms) newErrors.agreeTerms = 'You must agree to the terms and conditions';
+
+  return newErrors;
+};
+
+
+ const handleSubmit = async () => {
+  const newErrors = validateForm();
+  if (Object.keys(newErrors).length > 0) {
+    setErrors(newErrors);
+    console.log('❌ Form has errors, submission blocked');
+    return;
+  }
+
+  const submissionData = new FormData();
+
+ for (const key in formData) {
+  if (formData[key] instanceof File) {
+    submissionData.append(key, formData[key]);
+  } else {
+    submissionData.append(key, formData[key]);
+  }
+}
+
+try {
+  const response = await fetch('http://localhost:5000/api/registration/submit', {
+    method: 'POST',
+    body: submissionData,
+  });
+
+  const result = await response.json();
+
+  if (response.ok) {
     setIsSubmitted(true);
-    console.log('✅ FORM SUBMITTED SUCCESSFULLY!');
-    console.log('📋 COMPLETE FORM DATA:', formData);
-    
-    // Show success message
-    alert('Form submitted successfully! Check console for all values.');
-  };
+    alert('✅ Form submitted successfully!');
+    console.log('📨 Server response:', result);
+
+    // ✅ Redirect to payment page with ALL required data
+    navigate('/payment', {
+      state: {
+        courseName: name, // Course name
+        amount: amount,   // Course amount
+        userInfo: {
+          name: `${formData.firstName} ${formData.lastName}`, // ✅ User full name
+          phone: formData.phone,     // ✅ User phone
+          email: formData.email,     // ✅ User email
+        }
+      },
+    });
+  } else {
+    alert('❌ Submission failed. Please try again.');
+    console.error('❌ Error response from server:', result);
+  }
+} catch (err) {
+  console.error('❌ Network error:', err);
+  alert('❌ Could not connect to server.');
+}
+ }
 
   return (
     <AnimatedBackground>
@@ -156,6 +176,12 @@ const TradingRegistrationForm = () => {
           </div>
 
           {/* Form */}
+          <form
+  onSubmit={(e) => {
+    e.preventDefault(); // Prevent page reload
+    handleSubmit();     // Call your handler
+  }}
+>
           <div className="bg-gray-800/90 backdrop-blur-md rounded-2xl p-8 border border-blue-500/20">
             {/* Personal Information */}
             <div className="mb-8">
@@ -418,11 +444,13 @@ const TradingRegistrationForm = () => {
               <div className="mt-8 p-4 bg-green-900/20 rounded-lg border border-green-500/30">
                 <div className="text-green-200 text-center">
                   <p className="font-semibold">✅ Registration Completed Successfully!</p>
-                  <p className="text-sm mt-1">All form values have been logged to the console.</p>
+                  {/* <p className="text-sm mt-1">All form values have been logged to the console.</p> */}
                 </div>
               </div>
             )}
           </div>
+
+          </form>
         </div>
       </div>
     </AnimatedBackground>
