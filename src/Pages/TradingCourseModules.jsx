@@ -17,8 +17,7 @@ import {
   Gift,
   ChevronUp,
   ChevronDown,
-  Shield,
-  Send
+  Shield
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -90,11 +89,8 @@ Our Investors Are The Most Important person To Us...
 (See full disclaimer above)
 `;
 
-const message = `Join our Trading Professor group and unlock your trading success!\n\nClick to join: https://t.me/tpkgiytd`;
-const encodedMessage = encodeURIComponent(message);
-
-const telegramURL = `https://t.me/share/url?url=https://t.me/tpkgiytd&text=${encodedMessage}`;
-
+const encodedMessage = encodeURIComponent(telegramMessage);
+  const telegramURL = `https://t.me/share/url?url=https://t.me/tpkgiytd&text=${encodedMessage}`;
 
 
 // watsapp
@@ -487,7 +483,6 @@ const telegramURL = `https://t.me/share/url?url=https://t.me/tpkgiytd&text=${enc
     </div>
   ))}
 </div>
-</div>
 {/* All Phases Package */}
 <div className="mb-12">
   <div className="bg-gradient-to-r from-emerald-500/10 to-cyan-600/10 backdrop-blur-sm border border-emerald-500/30 rounded-2xl p-4 sm:p-6 lg:p-8 relative overflow-hidden">
@@ -520,12 +515,22 @@ const telegramURL = `https://t.me/share/url?url=https://t.me/tpkgiytd&text=${enc
           </div>
         </div>
 
-       <a href={telegramURL} target="_blank" rel="noopener noreferrer">
-        <button className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2 mx-auto transform hover:scale-105 shadow-lg">
-          <Send className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-          <span>Join Our Telegram</span>
+        <button
+  onClick={() => {
+    navigate('/register', {
+      state: {
+        name: allPhasesPackage.name,
+        amount:allPhasesPackage.price, // or phase.amount if your data has that key
+      },
+    });
+  }}
+  
+          className="bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
+        >
+          Enroll Complete Package
         </button>
-      </a>
+      </div>
+
       <div className="space-y-3 mt-6 lg:mt-0">
         {allPhasesPackage.features.map((feature, index) => (
           <div key={index} className="flex items-center space-x-3">
@@ -595,13 +600,22 @@ const telegramURL = `https://t.me/share/url?url=https://t.me/tpkgiytd&text=${enc
             </li>
           </ul>
         </div>
-           <a href={telegramURL} target="_blank" rel="noopener noreferrer">
-        <button className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-2 mx-auto transform hover:scale-105 shadow-lg">
-          <Send className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-          <span>Join Our Telegram</span>
+
+             <button
+  onClick={() => {
+    navigate('/register', {
+      state: {
+        name: allPhasesPackageFree.name,
+        amount:allPhasesPackageFree.price, // or phase.amount if your data has that key
+      },
+    });
+  }}
+          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
+        >
+          Enroll Free Phase
         </button>
-      </a>
       </div>
+
       <div className="space-y-3 mt-6 lg:mt-0">
         {allPhasesPackageFree.features.map((feature, index) => (
           <div key={index} className="flex items-center space-x-3">
