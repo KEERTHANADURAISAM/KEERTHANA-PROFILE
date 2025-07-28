@@ -90,8 +90,11 @@ Our Investors Are The Most Important person To Us...
 (See full disclaimer above)
 `;
 
-const encodedMessage = encodeURIComponent(telegramMessage);
-  const telegramURL = `https://t.me/share/url?url=https://t.me/tpkgiytd&text=${encodedMessage}`;
+const message = `Join our Trading Professor group and unlock your trading success!\n\nClick to join: https://t.me/tpkgiytd`;
+const encodedMessage = encodeURIComponent(message);
+
+const telegramURL = `https://t.me/share/url?url=https://t.me/tpkgiytd&text=${encodedMessage}`;
+
 
 
 // watsapp
