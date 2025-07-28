@@ -553,10 +553,15 @@ const navigate = useNavigate();
           </ul>
         </div>
 
-        <button
-          onClick={() => {
-            navigate(`/register?phase=${encodeURIComponent(allPhasesPackageFree.name)}`);
-          }}
+             <button
+  onClick={() => {
+    navigate('/register', {
+      state: {
+        name: allPhasesPackageFree.name,
+        amount:allPhasesPackageFree.price, // or phase.amount if your data has that key
+      },
+    });
+  }}
           className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
         >
           Enroll Free Phase
