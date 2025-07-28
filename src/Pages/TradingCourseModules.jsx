@@ -112,7 +112,7 @@ const navigate = useNavigate();
         "Psychology",
       ],
       bonuses: [
-        "2 Month TP Premium Group",
+        "2 Month TP Premium Group  Access",
         "Live Sessions",
       "Invite a Friend, Unlock 2 Month of TP Premium Group Access – On Us!",
         "Free Combination Website Paid Version"

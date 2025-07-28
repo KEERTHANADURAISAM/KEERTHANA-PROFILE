@@ -382,11 +382,10 @@ const AdminDashboard = () => {
                       <div key={reg.id || reg._id} className="p-4 border-b border-white/10 last:border-b-0">
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center space-x-3">
-                            <div className="w-10 h-10 bg-blue-600/20 rounded-full flex items-center justify-center">
-                              <span className="text-blue-300 font-medium">{reg.name?.charAt(0) || 'N'}</span>
-                            </div>
+                               
                             <div>
-                              <p className="font-medium text-white">{reg.name || 'Unknown'}</p>
+                              <p className="font-medium text-white">{reg.
+firstName|| 'Unknown'}</p>
                               <p className="text-sm text-white/70">{reg.email || 'No email'}</p>
                             </div>
                           </div>
@@ -648,12 +647,16 @@ const AdminDashboard = () => {
                               <DollarSign className="h-5 w-5 text-green-300" />
                             </div>
                             <div>
-                              <p className="font-medium text-white">{payment.name || 'Unknown'}</p>
+                              <p className="font-medium text-white">{payment.
+userName || 'Unknown'}</p>
                               <p className="text-sm text-white/70">{payment.email || 'No email'}</p>
                             </div>
                           </div>
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPaymentStatusColor(payment.paymentStatus || payment.status)}`}>
-                            {payment.paymentStatus || payment.status || 'unknown'}
+                            {payment.paymentStatus || payment.paymentStatus
+                            
+                            
+                            || 'unknown'}
                           </span>
                         </div>
                         <div className="grid grid-cols-2 gap-2 text-sm mb-3">
@@ -668,7 +671,7 @@ const AdminDashboard = () => {
                         </div>
                         <div className="text-sm">
                           <span className="text-white/70">Course:</span>
-                          <p className="text-white">{payment.course || 'No course specified'}</p>
+                          <p className="text-white">{payment.courseName || 'No course specified'}</p>
                         </div>
                         {payment.transactionId && (
                           <div className="text-sm mt-2">
