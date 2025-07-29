@@ -21,7 +21,7 @@ const AdminDashboard = () => {
   const fetchRegistrations = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://trading-server-ten.vercel.app/api/registration/all');
+      const response = await fetch('https://tradingserver.onrender.com/api/registration/all');
       if (!response.ok) {
         throw new Error('Failed to fetch registrations');
       }
@@ -384,8 +384,7 @@ const AdminDashboard = () => {
                           <div className="flex items-center space-x-3">
                                
                             <div>
-                              <p className="font-medium text-white">{reg.
-firstName|| 'Unknown'}</p>
+                              <p className="font-medium text-white">{reg.firstName|| 'Unknown'}</p>
                               <p className="text-sm text-white/70">{reg.email || 'No email'}</p>
                             </div>
                           </div>
@@ -396,7 +395,7 @@ firstName|| 'Unknown'}</p>
                         <div className="grid grid-cols-2 gap-2 text-sm mb-3">
                           <div>
                             <span className="text-white/70">Course:</span>
-                            <p className="text-white">{reg.course || 'No course'}</p>
+                            <p className="text-white">{reg.courseName || 'No course'}</p>
                           </div>
                           <div>
                             <span className="text-white/70">Join Date:</span>
