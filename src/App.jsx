@@ -15,7 +15,7 @@ function Layout({ children }) {
   const location = useLocation();
   
   // Hide navbar/footer only on registration page
-   const hideNavFooter = location.pathname.startsWith('/register');
+   const hideNavFooter = location.pathname.startsWith('/register') || location.pathname.startsWith('/admin');
 
   return (
     <>
