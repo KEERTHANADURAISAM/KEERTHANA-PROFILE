@@ -25,10 +25,13 @@ const TradingCourseModules = () => {
  
 const navigate = useNavigate();
 const handleEnroll = (course) => {
-//  const cleanedAmount = parseInt(course.price.toString().replace(/[₹,]/g, '')) || 0;
-navigate(`/register?courseName=${encodeURIComponent(course.name)}`);
-
+  console.log('Course clicked:', course);
+  console.log('Course name:', course.name);
+  console.log('Navigating to:', `/register?courseName=${encodeURIComponent(course.name)}`);
+  
+  navigate(`/register?courseName=${encodeURIComponent(course.name)}`);
 };
+
 
 // watsapp
 
