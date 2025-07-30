@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Users, BookOpen, Settings, TrendingUp, Plus, Edit, Trash2, Eye, Search, Filter, Download, Menu, X, Bell, User, DollarSign } from 'lucide-react';
+import { Users, BookOpen, Settings, TrendingUp, Plus, Edit, Trash2, Eye, Search, Filter, Download, Menu, X, Bell, User, DollarSign, FileImage, FileText } from 'lucide-react';
 import AnimatedBackground from './AnimatedGridBackground';
 
 
@@ -15,49 +15,63 @@ const AdminDashboard = () => {
   const [registrations, setRegistrations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showFileModal, setShowFileModal] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
 
-  // Fetch registrations
- useEffect(() => {
-  const fetchRegistrations = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch('https://tradingserver.onrender.com/api/registration/all');
-      if (!response.ok) {
-        throw new Error('Failed to fetch registrations');
+  // Fetch registrations with proper error handling
+  useEffect(() => {
+    const fetchRegistrations = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch('https://tradingserver.onrender.com/api/registration/all');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log('Registration data:', data); // Debug log
+        console.log('Sample registration:', data.registrations?.[0] || data[0]); // Debug individual record
+        
+        // Handle different possible response structures
+        let registrationData = [];
+        if (data.registrations && Array.isArray(data.registrations)) {
+          registrationData = data.registrations;
+        } else if (Array.isArray(data)) {
+          registrationData = data;
+        } else if (data.data && Array.isArray(data.data)) {
+          registrationData = data.data;
+        }
+        
+        setRegistrations(registrationData);
+      } catch (err) {
+        console.error('Failed to fetch registrations:', err);
+        setError(`Failed to load registrations: ${err.message}`);
+        setRegistrations([]);
+      } finally {
+        setLoading(false);
       }
-      const data = await response.json();
-      setRegistrations(Array.isArray(data.registrations) ? data.registrations : []);
-    } catch (err) {
-      console.error('Failed to fetch registrations:', err);
-      setError('Failed to load registrations');
-      setRegistrations([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  fetchRegistrations();
-}, []);
-
+    fetchRegistrations();
+  }, []);
 
   // Fetch payments
- useEffect(() => {
-  const fetchPayments = async () => {
-    try {
-      const response = await fetch('https://trading-server-ten.vercel.app/api/payments/all');
-      if (!response.ok) {
-        throw new Error('Failed to fetch payments');
+  useEffect(() => {
+    const fetchPayments = async () => {
+      try {
+        const response = await fetch('https://trading-server-ten.vercel.app/api/payments/all');
+        if (!response.ok) {
+          throw new Error('Failed to fetch payments');
+        }
+        const data = await response.json();
+        setPayments(Array.isArray(data.payments) ? data.payments : []);
+      } catch (err) {
+        console.error('Failed to fetch payments:', err);
+        setPayments([]);
       }
-      const data = await response.json();
-      setPayments(Array.isArray(data.payments) ? data.payments : []); // ✅ This will set payments to []
-    } catch (err) {
-      console.error('Failed to fetch payments:', err);
-      setPayments([]);
-    }
-  };
+    };
 
-  fetchPayments();
-}, []);
+    fetchPayments();
+  }, []);
 
   const [courses, setCourses] = useState([
     { id: 1, title: 'Basic Trading Fundamentals', duration: '4 weeks', price: '₹5,999', students: 156, status: 'active', description: 'Learn the basics of stock market trading' },
@@ -75,9 +89,12 @@ const AdminDashboard = () => {
 
   const filteredRegistrations = registrations.filter(reg => {
     if (!reg) return false;
-    const matchesSearch = (reg.name?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-                         (reg.email?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-                         (reg.course?.toLowerCase() || '').includes(searchTerm.toLowerCase());
+    const searchFields = [
+      reg.firstName, reg.lastName, reg.name, reg.email, 
+      reg.phone, reg.courseName, reg.course
+    ].filter(Boolean).join(' ').toLowerCase();
+    
+    const matchesSearch = searchFields.includes(searchTerm.toLowerCase());
     const matchesStatus = selectedStatus === 'all' || reg.status === selectedStatus;
     return matchesSearch && matchesStatus;
   });
@@ -123,6 +140,112 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleViewFile = (fileUrl, fileName) => {
+    setSelectedFile({ url: fileUrl, name: fileName });
+    setShowFileModal(true);
+  };
+
+  const handleDownloadFile = async (fileUrl, fileName) => {
+    try {
+      // Check if it's a valid URL
+      if (!fileUrl || typeof fileUrl !== 'string') {
+        throw new Error('Invalid file URL');
+      }
+
+      // For same-origin or properly configured files
+      const link = document.createElement('a');
+      link.href = fileUrl;
+      link.download = fileName || 'download';
+      link.target = '_blank';
+      
+      // Add to DOM temporarily
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+    } catch (error) {
+      console.error('Download failed:', error);
+      // Show user-friendly error
+      alert('File download not supported. The file will open in a new tab instead.');
+      // Fallback: open in new tab
+      if (fileUrl) {
+        window.open(fileUrl, '_blank');
+      }
+    }
+  };
+
+  const getFileExtension = (url) => {
+    if (!url || typeof url !== 'string') return '';
+    return url.split('.').pop()?.toLowerCase() || '';
+  };
+
+  const isImageFile = (url) => {
+    const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+    return imageExtensions.includes(getFileExtension(url));
+  };
+
+  const isPdfFile = (url) => {
+    return getFileExtension(url) === 'pdf';
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'Unknown';
+    try {
+      return new Date(dateString).toLocaleDateString('en-IN');
+    } catch {
+      return 'Invalid Date';
+    }
+  };
+
+  const getStudentName = (reg) => {
+    if (reg.firstName && reg.lastName) {
+      return `${reg.firstName} ${reg.lastName}`;
+    }
+    return reg.name || reg.firstName || reg.lastName || 'Unknown';
+  };
+
+  // Enhanced file URL getter with better field detection
+  const getFileUrl = (reg, fileType) => {
+    if (!reg) return null;
+    
+    // Check multiple possible field names for files
+    const possibleFields = {
+      aadhar: [
+        'aadharCard', 'aadharCardFile', 'aadhar', 'aadhaarCard', 
+        'aadhaarCardFile', 'idProof', 'adhaarCard', 'adharCard',
+        'aadharUrl', 'aadharFile', 'aadharCardUrl'
+      ],
+      signature: [
+        'signature', 'signatureFile', 'sign', 'signFile',
+        'signatureUrl', 'signUrl', 'studentSignature'
+      ]
+    };
+    
+    const fields = possibleFields[fileType] || [];
+    
+    for (const field of fields) {
+      if (reg[field] && reg[field] !== '' && reg[field] !== null && reg[field] !== undefined) {
+        console.log(`Found ${fileType} file in field "${field}":`, reg[field]); // Debug log
+        return reg[field];
+      }
+    }
+    
+    // Additional debug logging
+    console.log(`No ${fileType} file found for registration:`, Object.keys(reg));
+    return null;
+  };
+
+  const getStudentInitials = (reg) => {
+    const name = getStudentName(reg);
+    return name.split(' ').map(n => n.charAt(0)).join('').substring(0, 2).toUpperCase();
+  };
+
+  const hasFiles = (reg) => {
+    const aadharFile = getFileUrl(reg, 'aadhar');
+    const signatureFile = getFileUrl(reg, 'signature');
+    return !!(aadharFile || signatureFile);
+  };
+
   // Close sidebar when clicking outside on mobile
   useEffect(() => {
     const handleClickOutside = () => {
@@ -143,11 +266,11 @@ const AdminDashboard = () => {
   return (
     <AnimatedBackground>
       {/* Top Navbar */}
-      {/* <nav className="fixed top-0 left-0 right-0 bg-white/10 backdrop-blur-md border-b border-white/20 z-50"> */}
+      <nav className="fixed top-0 left-0 right-0 bg-white/10 backdrop-blur-md border-b border-white/20 z-50">
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Left side */}
-            <div className="flex items-center mt-2">
+            <div className="flex items-center">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -157,27 +280,27 @@ const AdminDashboard = () => {
               >
                 {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
-              <div className="flex items-center ml-2 lg:ml-0 mt-8">
+              <div className="flex items-center ml-2 lg:ml-0">
                 <TrendingUp className="h-8 w-8 text-blue-400 mr-2" />
                 <span className="text-xl font-bold text-white hidden sm:block">Trading Academy</span>
               </div>
             </div>
 
             {/* Right side */}
-            {/* <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4">
               <button className="p-2 text-white hover:bg-white/20 rounded-md">
                 <Bell className="h-6 w-6" />
               </button>
               <button className="p-2 text-white hover:bg-white/20 rounded-md">
                 <User className="h-6 w-6" />
               </button>
-            </div> */}
+            </div>
           </div>
         </div>
-      {/* </nav> */}
+      </nav>
 
       {/* Sidebar */}
-      <div className={`fixed mt-8 inset-y-0 left-0 w-64 bg-white/10 backdrop-blur-md border-r border-white/20 transform transition-transform duration-300 ease-in-out z-40 ${
+      <div className={`fixed inset-y-0 left-0 w-64 bg-white/10 backdrop-blur-md border-r border-white/20 transform transition-transform duration-300 ease-in-out z-40 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       } lg:translate-x-0 pt-16`}>
         <div className="p-6">
@@ -313,11 +436,11 @@ const AdminDashboard = () => {
                     <div key={reg.id || reg._id} className="flex items-center justify-between p-3 lg:p-4 bg-white/5 rounded-lg">
                       <div className="flex items-center space-x-3 lg:space-x-4">
                         <div className="w-8 lg:w-10 h-8 lg:h-10 bg-blue-600/20 rounded-full flex items-center justify-center">
-                          <span className="text-blue-300 font-semibold text-sm lg:text-base">{reg.name?.charAt(0) || 'N'}</span>
+                          <span className="text-blue-300 font-semibold text-sm lg:text-base">{getStudentInitials(reg)}</span>
                         </div>
                         <div>
-                          <p className="font-medium text-white text-sm lg:text-base">{reg.name || 'Unknown'}</p>
-                          <p className="text-xs lg:text-sm text-white/70">{reg.course || 'No course'}</p>
+                          <p className="font-medium text-white text-sm lg:text-base">{getStudentName(reg)}</p>
+                          <p className="text-xs lg:text-sm text-white/70">{reg.courseName || reg.course || 'No course'}</p>
                         </div>
                       </div>
                       <span className={`px-2 lg:px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(reg.status || 'pending')}`}>
@@ -382,9 +505,11 @@ const AdminDashboard = () => {
                       <div key={reg.id || reg._id} className="p-4 border-b border-white/10 last:border-b-0">
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center space-x-3">
-                               
+                            <div className="w-10 h-10 bg-blue-600/20 rounded-full flex items-center justify-center">
+                              <span className="text-blue-300 font-semibold text-sm">{getStudentInitials(reg)}</span>
+                            </div>
                             <div>
-                              <p className="font-medium text-white">{reg.firstName|| 'Unknown'}</p>
+                              <p className="font-medium text-white">{getStudentName(reg)}</p>
                               <p className="text-sm text-white/70">{reg.email || 'No email'}</p>
                             </div>
                           </div>
@@ -395,25 +520,64 @@ const AdminDashboard = () => {
                         <div className="grid grid-cols-2 gap-2 text-sm mb-3">
                           <div>
                             <span className="text-white/70">Course:</span>
-                            <p className="text-white">{reg.courseName || 'No course'}</p>
+                            <p className="text-white">{reg.courseName || reg.course || 'No course'}</p>
+                          </div>
+                          <div>
+                            <span className="text-white/70">Phone:</span>
+                            <p className="text-white">{reg.phone || 'No phone'}</p>
                           </div>
                           <div>
                             <span className="text-white/70">Join Date:</span>
-                            <p className="text-white">{reg.joinDate || reg.createdAt ? new Date(reg.joinDate || reg.createdAt).toLocaleDateString() : 'Unknown'}</p>
+                            <p className="text-white">{formatDate(reg.createdAt || reg.joinDate)}</p>
+                          </div>
+                          <div>
+                            <span className="text-white/70">Experience:</span>
+                            <p className="text-white">{reg.tradingExperience || 'Not specified'}</p>
                           </div>
                         </div>
-                        <div className="mb-3">
-                          <div className="flex justify-between text-sm mb-1">
-                            <span className="text-white/70">Progress</span>
-                            <span className="text-white">{reg.progress || 0}%</span>
+                        {(hasFiles(reg)) && (
+                          <div className="mb-3">
+                            <span className="text-white/70 text-sm">Files:</span>
+                            <div className="flex gap-2 mt-1">
+                              {getFileUrl(reg, 'aadhar') && (
+                                <div className="flex">
+                                  <button
+                                    onClick={() => handleViewFile(getFileUrl(reg, 'aadhar'), 'Aadhar Card')}
+                                    className="px-2 py-1 bg-blue-600/20 text-blue-300 rounded-l text-xs flex items-center"
+                                  >
+                                    <FileImage className="h-3 w-3 mr-1" />
+                                    Aadhar
+                                  </button>
+                                  <button
+                                    onClick={() => handleDownloadFile(getFileUrl(reg, 'aadhar'), `${getStudentName(reg)}_Aadhar.${getFileExtension(getFileUrl(reg, 'aadhar'))}`)}
+                                    className="px-1 py-1 bg-blue-700/20 text-blue-300 rounded-r text-xs hover:bg-blue-600/30"
+                                    title="Download Aadhar Card"
+                                  >
+                                    <Download className="h-3 w-3" />
+                                  </button>
+                                </div>
+                              )}
+                              {getFileUrl(reg, 'signature') && (
+                                <div className="flex">
+                                  <button
+                                    onClick={() => handleViewFile(getFileUrl(reg, 'signature'), 'Signature')}
+                                    className="px-2 py-1 bg-green-600/20 text-green-300 rounded-l text-xs flex items-center"
+                                  >
+                                    <FileText className="h-3 w-3 mr-1" />
+                                    Signature
+                                  </button>
+                                  <button
+                                    onClick={() => handleDownloadFile(getFileUrl(reg, 'signature'), `${getStudentName(reg)}_Signature.${getFileExtension(getFileUrl(reg, 'signature'))}`)}
+                                    className="px-1 py-1 bg-green-700/20 text-green-300 rounded-r text-xs hover:bg-green-600/30"
+                                    title="Download Signature"
+                                  >
+                                    <Download className="h-3 w-3" />
+                                  </button>
+                                </div>
+                              )}
+                            </div>
                           </div>
-                          <div className="w-full bg-white/20 rounded-full h-2">
-                            <div
-                              className="bg-blue-400 h-2 rounded-full"
-                              style={{ width: `${reg.progress || 0}%` }}
-                            ></div>
-                          </div>
-                        </div>
+                        )}
                         <div className="flex space-x-2">
                           <button className="p-2 text-blue-400 hover:bg-blue-600/20 rounded">
                             <Eye className="h-4 w-4" />
@@ -435,7 +599,7 @@ const AdminDashboard = () => {
                           <th className="px-6 py-4 text-left text-sm font-medium text-white">Contact</th>
                           <th className="px-6 py-4 text-left text-sm font-medium text-white">Course</th>
                           <th className="px-6 py-4 text-left text-sm font-medium text-white">Join Date</th>
-                          <th className="px-6 py-4 text-left text-sm font-medium text-white">Progress</th>
+                          <th className="px-6 py-4 text-left text-sm font-medium text-white">Files</th>
                           <th className="px-6 py-4 text-left text-sm font-medium text-white">Status</th>
                           <th className="px-6 py-4 text-left text-sm font-medium text-white">Actions</th>
                         </tr>
@@ -446,9 +610,9 @@ const AdminDashboard = () => {
                             <td className="px-6 py-4">
                               <div className="flex items-center space-x-3">
                                 <div className="w-8 h-8 bg-blue-600/20 rounded-full flex items-center justify-center">
-                                  <span className="text-blue-300 font-medium text-sm">{reg.name?.charAt(0) || 'N'}</span>
+                                  <span className="text-blue-300 font-medium text-sm">{getStudentInitials(reg)}</span>
                                 </div>
-                                <span className="font-medium text-white">{reg.name || 'Unknown'}</span>
+                                <span className="font-medium text-white">{getStudentName(reg)}</span>
                               </div>
                             </td>
                             <td className="px-6 py-4">
@@ -457,16 +621,50 @@ const AdminDashboard = () => {
                                 <p className="text-white/70">{reg.phone || 'No phone'}</p>
                               </div>
                             </td>
-                            <td className="px-6 py-4 text-sm text-white">{reg.course || 'No course'}</td>
-                            <td className="px-6 py-4 text-sm text-white">{reg.joinDate || reg.createdAt ? new Date(reg.joinDate || reg.createdAt).toLocaleDateString() : 'Unknown'}</td>
+                            <td className="px-6 py-4 text-sm text-white">{reg.courseName || reg.course || 'No course'}</td>
+                            <td className="px-6 py-4 text-sm text-white">{formatDate(reg.createdAt || reg.joinDate)}</td>
                             <td className="px-6 py-4">
-                              <div className="w-full bg-white/20 rounded-full h-2">
-                                <div
-                                  className="bg-blue-400 h-2 rounded-full"
-                                  style={{ width: `${reg.progress || 0}%` }}
-                                ></div>
+                              <div className="flex gap-1">
+                                {getFileUrl(reg, 'aadhar') && (
+                                  <div className="flex">
+                                    <button
+                                      onClick={() => handleViewFile(getFileUrl(reg, 'aadhar'), 'Aadhar Card')}
+                                      className="p-1 text-blue-400 hover:bg-blue-600/20 rounded-l"
+                                      title="View Aadhar Card"
+                                    >
+                                      <FileImage className="h-4 w-4" />
+                                    </button>
+                                    <button
+                                      onClick={() => handleDownloadFile(getFileUrl(reg, 'aadhar'), `${getStudentName(reg)}_Aadhar.${getFileExtension(getFileUrl(reg, 'aadhar'))}`)}
+                                      className="p-1 text-blue-400 hover:bg-blue-600/20 rounded-r border-l border-blue-500/30"
+                                      title="Download Aadhar Card"
+                                    >
+                                      <Download className="h-3 w-3" />
+                                    </button>
+                                  </div>
+                                )}
+                                {getFileUrl(reg, 'signature') && (
+                                  <div className="flex ml-1">
+                                    <button
+                                      onClick={() => handleViewFile(getFileUrl(reg, 'signature'), 'Signature')}
+                                      className="p-1 text-green-400 hover:bg-green-600/20 rounded-l"
+                                      title="View Signature"
+                                    >
+                                      <FileText className="h-4 w-4" />
+                                    </button>
+                                    <button
+                                      onClick={() => handleDownloadFile(getFileUrl(reg, 'signature'), `${getStudentName(reg)}_Signature.${getFileExtension(getFileUrl(reg, 'signature'))}`)}
+                                      className="p-1 text-green-400 hover:bg-green-600/20 rounded-r border-l border-green-500/30"
+                                      title="Download Signature"
+                                    >
+                                      <Download className="h-3 w-3" />
+                                    </button>
+                                  </div>
+                                )}
+                                {!hasFiles(reg) && (
+                                  <span className="text-white/50 text-xs">No files</span>
+                                )}
                               </div>
-                              <span className="text-sm text-white/70 mt-1">{reg.progress || 0}%</span>
                             </td>
                             <td className="px-6 py-4">
                               <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(reg.status || 'pending')}`}>
@@ -646,16 +844,12 @@ const AdminDashboard = () => {
                               <DollarSign className="h-5 w-5 text-green-300" />
                             </div>
                             <div>
-                              <p className="font-medium text-white">{payment.
-userName || 'Unknown'}</p>
+                              <p className="font-medium text-white">{payment.userName || payment.name || 'Unknown'}</p>
                               <p className="text-sm text-white/70">{payment.email || 'No email'}</p>
                             </div>
                           </div>
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPaymentStatusColor(payment.paymentStatus || payment.status)}`}>
-                            {payment.paymentStatus || payment.paymentStatus
-                            
-                            
-                            || 'unknown'}
+                            {payment.paymentStatus || payment.status || 'unknown'}
                           </span>
                         </div>
                         <div className="grid grid-cols-2 gap-2 text-sm mb-3">
@@ -665,12 +859,12 @@ userName || 'Unknown'}</p>
                           </div>
                           <div>
                             <span className="text-white/70">Date:</span>
-                            <p className="text-white">{payment.createdAt ? new Date(payment.createdAt).toLocaleDateString() : 'Unknown'}</p>
+                            <p className="text-white">{formatDate(payment.createdAt)}</p>
                           </div>
                         </div>
                         <div className="text-sm">
                           <span className="text-white/70">Course:</span>
-                          <p className="text-white">{payment.courseName || 'No course specified'}</p>
+                          <p className="text-white">{payment.courseName || payment.course || 'No course specified'}</p>
                         </div>
                         {payment.transactionId && (
                           <div className="text-sm mt-2">
@@ -702,10 +896,10 @@ userName || 'Unknown'}</p>
                             <td className="px-6 py-4">
                               <div className="flex items-center space-x-3">
                                 <div className="w-8 h-8 bg-green-600/20 rounded-full flex items-center justify-center">
-                                  <span className="text-green-300 font-medium text-sm">{payment.name?.charAt(0) || 'U'}</span>
+                                  <span className="text-green-300 font-medium text-sm">{(payment.userName || payment.name || 'U').charAt(0)}</span>
                                 </div>
                                 <div>
-                                  <p className="font-medium text-white">{payment.name || 'Unknown'}</p>
+                                  <p className="font-medium text-white">{payment.userName || payment.name || 'Unknown'}</p>
                                   <p className="text-sm text-white/70">{payment.email || 'No email'}</p>
                                 </div>
                               </div>
@@ -713,14 +907,14 @@ userName || 'Unknown'}</p>
                             <td className="px-6 py-4">
                               <span className="text-lg font-semibold text-white">₹{payment.amount?.toLocaleString() || '0'}</span>
                             </td>
-                            <td className="px-6 py-4 text-sm text-white">{payment.course || 'No course specified'}</td>
+                            <td className="px-6 py-4 text-sm text-white">{payment.courseName || payment.course || 'No course specified'}</td>
                             <td className="px-6 py-4">
                               <span className={`px-3 py-1 rounded-full text-xs font-medium ${getPaymentStatusColor(payment.paymentStatus || payment.status)}`}>
                                 {payment.paymentStatus || payment.status || 'unknown'}
                               </span>
                             </td>
                             <td className="px-6 py-4 text-sm text-white">
-                              {payment.createdAt ? new Date(payment.createdAt).toLocaleDateString() : 'Unknown'}
+                              {formatDate(payment.createdAt)}
                             </td>
                             <td className="px-6 py-4 text-sm text-white font-mono">
                               {payment.transactionId ? payment.transactionId.substring(0, 12) + '...' : 'N/A'}
@@ -816,6 +1010,106 @@ userName || 'Unknown'}</p>
                   >
                     Cancel
                   </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* File View Modal */}
+        {showFileModal && selectedFile && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 w-full max-w-4xl max-h-[90vh] overflow-auto">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold text-white">{selectedFile.name}</h3>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleDownloadFile(selectedFile.url, selectedFile.name)}
+                    className="p-2 text-white hover:bg-white/20 rounded-lg transition-colors"
+                    title="Download File"
+                  >
+                    <Download className="h-5 w-5" />
+                  </button>
+                  <button
+                    onClick={() => window.open(selectedFile.url, '_blank')}
+                    className="p-2 text-white hover:bg-white/20 rounded-lg transition-colors"
+                    title="Open in New Tab"
+                  >
+                    <Eye className="h-5 w-5" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowFileModal(false);
+                      setSelectedFile(null);
+                    }}
+                    className="p-2 text-white hover:bg-white/20 rounded-lg transition-colors"
+                  >
+                    <X className="h-6 w-6" />
+                  </button>
+                </div>
+              </div>
+              
+              <div className="flex justify-center">
+                {isImageFile(selectedFile.url) ? (
+                  <img
+                    src={selectedFile.url}
+                    alt={selectedFile.name}
+                    className="max-w-full max-h-[70vh] object-contain rounded-lg"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'block';
+                    }}
+                  />
+                ) : isPdfFile(selectedFile.url) ? (
+                  <iframe
+                    src={selectedFile.url}
+                    className="w-full h-[70vh] rounded-lg"
+                    title={selectedFile.name}
+                  />
+                ) : (
+                  <div className="text-white/70 text-center py-8">
+                    <FileImage className="h-16 w-16 mx-auto mb-4" />
+                    <p className="mb-2 text-lg font-semibold">File not supported for preview</p>
+                    <p className="mb-4 text-sm">This file type cannot be displayed in the browser.</p>
+                    <div className="flex gap-4 justify-center">
+                      <button
+                        onClick={() => handleDownloadFile(selectedFile.url, selectedFile.name)}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center"
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        Download File
+                      </button>
+                      <button
+                        onClick={() => window.open(selectedFile.url, '_blank')}
+                        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
+                      >
+                        <Eye className="h-4 w-4 mr-2" />
+                        Open in New Tab
+                      </button>
+                    </div>
+                  </div>
+                )}
+                
+                <div style={{ display: 'none' }} className="text-white/70 text-center py-8">
+                  <FileImage className="h-16 w-16 mx-auto mb-4" />
+                  <p className="mb-2 text-lg font-semibold">Unable to display file</p>
+                  <p className="mb-4 text-sm">The file could not be loaded or displayed.</p>
+                  <div className="flex gap-4 justify-center">
+                    <button
+                      onClick={() => handleDownloadFile(selectedFile.url, selectedFile.name)}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center"
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Download File
+                    </button>
+                    <button
+                      onClick={() => window.open(selectedFile.url, '_blank')}
+                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
+                    >
+                      <Eye className="h-4 w-4 mr-2" />
+                      Open in New Tab
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

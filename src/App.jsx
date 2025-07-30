@@ -12,10 +12,10 @@ import Footer from "./Pages/Footer";
 import AnimatedBackground from "./Pages/AnimatedGridBackground";
 import Payment from "./Pages/Payment";
 
-
 function Layout({ children }) {
   const location = useLocation();
-  const hideNavFooter = location.pathname === ['/register', '/admin'].includes(location.pathname);
+  // Fixed the logic - check if current path is in the array of paths to hide navbar/footer
+  const hideNavFooter = ['/register', '/admin'].includes(location.pathname);
 
   return (
     <>
@@ -33,19 +33,19 @@ function App() {
     <>
       <ScrollToTop />
       <AnimatedBackground>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<ClientPage />} />
-          <Route path="/about" element={<About />} />
-          {/* <Route path="/contact" element={<Contact />} /> */}
-          <Route path="/course" element={<TradingCourseModules />} />
-          <Route path="/p&lrecords" element={<PlLinkShowcase />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/register" element={<TradingRegistrationForm />} />
-          <Route path="/payment" element={<Payment/>}/>
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </Layout>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<ClientPage />} />
+            <Route path="/about" element={<About />} />
+            {/* <Route path="/contact" element={<Contact />} /> */}
+            <Route path="/course" element={<TradingCourseModules />} />
+            <Route path="/p&lrecords" element={<PlLinkShowcase />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/register" element={<TradingRegistrationForm />} />
+            <Route path="/payment" element={<Payment/>}/>
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </Layout>
       </AnimatedBackground>
     </>
   );
